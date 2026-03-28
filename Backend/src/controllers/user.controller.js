@@ -59,7 +59,9 @@ async function unfollowUserController(req, res) {
     const isUserFollowing = await followModel.findOne({
         follower: followerUsername,
         followee: followeeUsername
-    })
+    })}
 module.exports = {
   followUserController,
-};
+  unfollowUserController,
+  
+}

@@ -18,6 +18,6 @@ postRouter.get('/', postController.getPostController)
 /* GET  /api/posts/details/:postid
   return an detail about specific post with id, also check weather the post belong to the user that is requesting 
 */
-postRouter.get('/details/:postId', postController.getPostDetails)
+postRouter.get('/details/:postId', postController.getPostDetailsController)
  
 module.exports = postRouter
