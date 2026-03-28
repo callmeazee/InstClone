@@ -1,6 +1,7 @@
 const postModel = require('../models/post.model')
 const Imagekit = require("@imagekit/nodejs")
 const jwt = require('jsonwebtoken')
+const likeModel = require('../models/like.model')
 
 
 const imagekit = new Imagekit({
@@ -74,5 +75,82 @@ async function getPostDetailsController(req,res){
     })
 }
 
+async function likePostController(req,res){
+    const username = req.user.username
+    const postId = req.params.postId
 
-module.exports = {createPostController, getPostController, getPostDetailsController }
+    const post = await postModel.findById(postId)
+
+    if(!post){
+        return res.status(404).json({
+            message: "Post not found"
+        })
+    }
+
+
+
+    // if(post.likes.includes(username)){
+    //     return res.status(400).json({
+    //         message: "You have already liked this post"
+    //     })
+    // }
+    // post.likes.push(username)
+    // await post.save()
+    // res.status(200).json({
+    //     message: "Post liked successfully",
+    //     post
+    // })
+
+const like = await likeModel.create({
+    post: postId,
+    username: username
+})
+res.status(200).json({
+    message: "Post liked successfully",
+    like
+})
+
+
+}
+
+async function unlikePostController(req,res){
+    const username = req.user.username
+    const postId = req.params.postId
+
+    const post = await postModel.findById(postId)
+
+    if(!post){
+        return res.status(404).json({
+            message: "Post not found"
+        })
+    }
+
+    // if(!post.likes.includes(username)){
+    //     return res.status(400).json({
+    //         message: "You have not liked this post"
+    //     })
+    // }
+    // const index = post.likes.indexOf(username)
+    // post.likes.splice(index, 1)
+    // await post.save()
+    // res.status(200).json({
+    //     message: "Post unliked successfully",
+    //     post
+    // })
+
+const likeRecord = await likeModel.findOne({
+    post: postId,
+    username: username
+})
+if(!likeRecord){
+    return res.status(400).json({
+        message: "You have not liked this post"     
+    })
+}
+await likeRecord.remove()
+res.status(200).json({
+    message: "Post unliked successfully"
+})
+}
+
+module.exports = {createPostController, getPostController, getPostDetailsController, likePostController, unlikePostController}
