@@ -4,7 +4,7 @@ const authRouter = express.Router()
 
 const authController = require('../controllers/auth.controller')
 
-
+const identifyUser = require('../middlewares/auth.middlewares')
 /* 
 POST: /api/auth/register 
 */
@@ -20,8 +20,20 @@ POST: /api/auth/login
 
 authRouter.post('/login', authController.loginController )
 
+/* @route POST: /api/auth/logout
+@desc logout the authenticated user
+@access private
+*/
 
+authRouter.post('/logout', identifyUser, authController.logoutController )    
 
+/* @route GET: /api/auth/me  
+@desc get the authenticated user details
+@access private
+
+*/
+
+authRouter.get('/get-me', identifyUser, authController.getMeController)
 
 
 

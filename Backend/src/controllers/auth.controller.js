@@ -7,22 +7,6 @@ const bcrypt = require('bcrypt')
 async  function registerController (req,res){
     const{email, username, password, bio, profileImage} = req.body
 
-//    const isUserExistByEmail = await userModel.findOne(email)
-
-//    if(isUserExistByEmail){
-//     return res.status(409).json({
-//         messgae: 'User already exist with same email'
-//     })
-//    }
-
-//    const isUserExistByUsername = await userModel.findOne(username)
-
-//    if(isUserExistByUsername){
-//     return res.status(409).json({
-//         messgae: "username already exists "
-//     })
-//    }
-
    const isUserExist = await userModel.findOne({
     $or:[
         {username},
@@ -34,16 +18,21 @@ async  function registerController (req,res){
         message: "User already exist" + (isUserExist).email === email ? "email already exist": 'username already exist'
     })
    }
-//    const hash = crypto.createHash('sha256').update(password).digest('hex')
+   
+   // Generate default profile image if not provided
+   const defaultProfileImage = profileImage || `https://api.dicebear.com/7.x/avataaars/svg?seed=${username}`
+   
    const hash = await bcrypt.hash(password, 10)
    const user = await userModel.create({
-    username, email, bio, profileImage, 
+    username, 
+    email, 
+    bio: bio || '', 
+    profileImage: defaultProfileImage, 
     password: hash
    })
    const token = jwt.sign({
     id: user._id,
-        username: user.username
-    
+    username: user.username
    }, process.env.JWT_SECRET_KEY, {expiresIn: '1d'})
 
    res.cookie('token', token)
@@ -62,8 +51,20 @@ async  function registerController (req,res){
 
 
 
+
+
+
+
+
+
+
 async function loginController (req,res) {
+
+       if (!process.env.JWT_SECRET_KEY) {
+        throw new Error("JWT_SECRET_KEY is missing");
+    }
     const {username, email, password} = req.body
+    
 
     const user = await userModel.findOne({
         $or:[
@@ -79,7 +80,7 @@ async function loginController (req,res) {
             },
 
         ]
-    })
+    }).select('+password')
     if(!user){
         return res.status(404).json({
             message: 'user not found' 
@@ -98,7 +99,16 @@ async function loginController (req,res) {
       process.env.JWT_SECRET_KEY,
       {expiresIn: "1d"}
     )
-    res.cookie("token", token)
+    // res.cookie("token", token)
+
+    res.cookie("token", token, {
+    httpOnly: true,     // Prevents JavaScript from stealing the token
+    secure: false,      // Set to false for localhost (HTTP)
+    sameSite: 'lax',    // Allows the cookie to be sent on cross-origin requests from the same site
+    maxAge: 24 * 60 * 60 * 1000 ,// 1 day
+    path: '/'
+});
+   
 
     res.status(200).json({
         message: "Logged in successfully",
@@ -111,5 +121,32 @@ async function loginController (req,res) {
     })
 }
 
-module.exports = {registerController, loginController}
+async function logoutController(req,res){
+    res.clearCookie('token')
+    res.json({
+        message: "Logged out successfully"
+    })
+}
+
+async function getMeController(req,res){
+    const userId = req.user.id
+    const user = await userModel.findById(userId)
+
+    if(!user){
+        return res.status(404).json({
+            message: "User not found"
+        })
+    }
+
+    res.status(200).json({
+        user: {
+            username: user.username,
+            email: user.email,
+            bio: user.bio,
+            profileImage: user.profileImage
+        }
+    })
+}
+
+module.exports = {registerController, loginController, getMeController, logoutController}
 

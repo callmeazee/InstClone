@@ -1,5 +1,7 @@
 const followModel = require("../models/follow.model")
 const userModel = require("../models/user.model")
+const savedModel = require("../models/saved.model")
+const postModel = require("../models/post.model")
 
 /* FOLLOW REQUEST */
 async function followUserController(req, res) {
@@ -30,13 +32,20 @@ async function followUserController(req, res) {
   } catch (err) {
     if (err.code === 11000) {
       const existing = await followModel.findOne({ follower, followee })
-      return res.status(409).json({
-        message: `Already ${existing.status}`,
-        follow: existing
-      })
+      if (existing) {
+        return res.status(409).json({
+          message: `Already ${existing.status}`,
+          follow: existing
+        })
+      } else {
+        return res.status(409).json({
+          message: "Follow request already exists"
+        })
+      }
     }
 
-    return res.status(500).json({ message: "Server error" })
+    console.error("Follow error:", err)
+    return res.status(500).json({ message: "Server error: " + err.message })
   }
 }
 
@@ -123,14 +132,147 @@ async function getFollowStatusController(req, res) {
 
 /* GET PENDING REQUESTS */
 async function getPendingRequestsController(req, res) {
-  const currentUser = req.user.username
+  try {
+    const currentUser = req.user.username
 
-  const requests = await followModel.find({
-    followee: currentUser,
-    status: "pending"
-  })
+    const requests = await followModel.find({
+      followee: currentUser,
+      status: "pending"
+    })
 
-  return res.json({ requests })
+    // Fetch user details for each follower
+    const requestsWithUserDetails = await Promise.all(
+      requests.map(async (req) => {
+        const followerUser = await userModel.findOne(
+          { username: req.follower },
+          'username profileImage email'
+        ).lean()
+        return {
+          _id: req._id,
+          follower: req.follower,
+          followee: req.followee,
+          status: req.status,
+          followerDetails: followerUser,
+          createdAt: req.createdAt
+        }
+      })
+    )
+
+    return res.json({ 
+      message: "Pending requests fetched successfully",
+      requests: requestsWithUserDetails 
+    })
+  } catch (err) {
+    console.error("Get pending requests error:", err)
+    return res.status(500).json({ message: "Server error: " + err.message })
+  }
+}
+
+/* SAVE POST */
+async function savePostController(req, res) {
+  try {
+    const username = req.user.username
+    const postId = req.params.postId
+
+    const post = await postModel.findById(postId)
+    if (!post) {
+      return res.status(404).json({ message: "Post not found" })
+    }
+
+    const saved = await savedModel.create({
+      user: username,
+      post: postId
+    })
+
+    return res.status(201).json({
+      message: "Post saved successfully",
+      saved
+    })
+  } catch (err) {
+    if (err.code === 11000) {
+      return res.status(409).json({
+        message: "Post already saved"
+      })
+    }
+    return res.status(500).json({ message: "Server error" })
+  }
+}
+
+/* UNSAVE POST */
+async function unsavePostController(req, res) {
+  try {
+    const username = req.user.username
+    const postId = req.params.postId
+
+    const deleted = await savedModel.findOneAndDelete({
+      user: username,
+      post: postId
+    })
+
+    if (!deleted) {
+      return res.status(404).json({
+        message: "Post not saved"
+      })
+    }
+
+    return res.json({
+      message: "Post unsaved successfully"
+    })
+  } catch (err) {
+    return res.status(500).json({ message: "Server error" })
+  }
+}
+
+/* GET SAVED POSTS */
+async function getSavedPostsController(req, res) {
+  try {
+    const username = req.user.username
+
+    const saved = await savedModel.find({ user: username }).populate('post').sort({ createdAt: -1 })
+
+    return res.json({
+      message: "Saved posts fetched successfully",
+      saved,
+      count: saved.length
+    })
+  } catch (err) {
+    return res.status(500).json({ message: "Server error" })
+  }
+}
+
+/* GET USER STATS (followers and following count) */
+async function getUserStatsController(req, res) {
+  try {
+    const username = req.params.username || req.user.username
+
+    // Count followers (people following this user)
+    const followersCount = await followModel.countDocuments({
+      followee: username,
+      status: "accepted"
+    })
+
+    // Count following (people this user is following)
+    const followingCount = await followModel.countDocuments({
+      follower: username,
+      status: "accepted"
+    })
+
+    // Count posts
+    const postsCount = await postModel.countDocuments({
+      user: username
+    })
+
+    return res.json({
+      message: "User stats fetched successfully",
+      username,
+      followers: followersCount,
+      following: followingCount,
+      posts: postsCount
+    })
+  } catch (err) {
+    console.error("Get user stats error:", err)
+    return res.status(500).json({ message: "Server error" })
+  }
 }
 
 module.exports = {
@@ -139,5 +281,9 @@ module.exports = {
   rejectFollowController,
   unfollowUserController,
   getFollowStatusController,
-  getPendingRequestsController
+  getPendingRequestsController,
+  savePostController,
+  unsavePostController,
+  getSavedPostsController,
+  getUserStatsController
 }

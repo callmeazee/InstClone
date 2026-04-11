@@ -75,42 +75,79 @@ async function getPostDetailsController(req,res){
     })
 }
 
-async function likePostController(req,res){
-    const username = req.user.username
-    const postId = req.params.postId
+// async function likePostController(req,res){
+//     const username = req.user.username
+//     const postId = req.params.postId
 
-    const post = await postModel.findById(postId)
+//     const post = await postModel.findById(postId)
 
-    if(!post){
-        return res.status(404).json({
-            message: "Post not found"
-        })
+//     if(!post){
+//         return res.status(404).json({
+//             message: "Post not found"
+//         })
+//     }
+
+
+
+
+//     // if(post.likes.includes(username)){
+//     //     return res.status(400).json({
+//     //         message: "You have already liked this post"
+//     //     })
+//     // }
+//     // post.likes.push(username)
+//     // await post.save()
+//     // res.status(200).json({
+//     //     message: "Post liked successfully",
+//     //     post
+//     // })
+
+// const like = await likeModel.create({
+//     post: postId,
+//     username: username
+// })
+// res.status(200).json({
+//     message: "Post liked successfully",
+//     like
+// })
+
+
+// }
+
+async function likePostController(req, res) {
+    try {
+        const username = req.user.username; // Ensure this exists in your JWT
+        const postId = req.params.postId;
+
+        const post = await postModel.findById(postId);
+        if (!post) {
+            return res.status(404).json({ message: "Post not found" });
+        }
+
+        // Fix: Use 'user' to match your Schema
+        const like = await likeModel.create({
+            post: postId,
+            user: username 
+        });
+
+        res.status(200).json({
+            message: "Post liked successfully",
+            like
+        });
+
+    } catch (error) {
+        // Handle the Unique Index constraint (Error code 11000)
+        if (error.code === 11000) {
+            return res.status(400).json({
+                message: "You have already liked this post"
+            });
+        }
+        
+        res.status(500).json({
+            message: "Internal server error",
+            error: error.message
+        });
     }
-
-
-
-    // if(post.likes.includes(username)){
-    //     return res.status(400).json({
-    //         message: "You have already liked this post"
-    //     })
-    // }
-    // post.likes.push(username)
-    // await post.save()
-    // res.status(200).json({
-    //     message: "Post liked successfully",
-    //     post
-    // })
-
-const like = await likeModel.create({
-    post: postId,
-    username: username
-})
-res.status(200).json({
-    message: "Post liked successfully",
-    like
-})
-
-
 }
 
 async function unlikePostController(req,res){
@@ -138,19 +175,98 @@ async function unlikePostController(req,res){
     //     post
     // })
 
-const likeRecord = await likeModel.findOne({
+const likeRecord = await likeModel.findOneAndDelete({
     post: postId,
-    username: username
+    user: username
 })
 if(!likeRecord){
     return res.status(400).json({
         message: "You have not liked this post"     
     })
 }
-await likeRecord.remove()
 res.status(200).json({
     message: "Post unliked successfully"
 })
 }
 
-module.exports = {createPostController, getPostController, getPostDetailsController, likePostController, unlikePostController}
+async function deletePostController(req,res){
+    const userId = req.user.id
+    const postId = req.params.postId
+
+    const post = await postModel.findById(postId)
+
+    if(!post){
+        return res.status(404).json({
+            message: "Post not found"
+        })
+    }
+
+    const isValidUser = post.user.toString() === userId
+    if(!isValidUser){
+        return res.status(403).json({
+            message: "You are not authorized to delete this post"
+        })
+    }
+    await postModel.findByIdAndDelete(postId)
+    res.status(200).json({
+        message: "Post deleted successfully"
+    })
+}
+
+async function getFeedController(req,res){
+    const user = req.user || null
+    const username = user?.username || null
+    const followModel = require('../models/follow.model')
+    const savedModel = require('../models/saved.model')
+
+    const posts = await Promise.all(
+        (await postModel.find({}).sort({_id: -1}).populate('user').lean()).map(async (post) => {
+            // Check if current user liked this post
+            let isLiked = false
+            if (username) {
+                isLiked = await likeModel.exists({
+                    user: username,
+                    post: post._id,
+                })
+            }
+            
+            // Get like count
+            const likeCount = await likeModel.countDocuments({ post: post._id })
+            
+            // Check if current user is following the post creator - return follow status
+            let followStatus = null
+            if (username && post.user?.username && username !== post.user.username) {
+                const followRecord = await followModel.findOne({
+                    follower: username,
+                    followee: post.user.username
+                })
+                if (followRecord) {
+                    followStatus = followRecord.status // 'pending', 'accepted', or null
+                }
+            }
+            
+            // Check if current user has saved this post
+            let isSaved = false
+            if (username) {
+                isSaved = await savedModel.exists({
+                    user: username,
+                    post: post._id,
+                })
+            }
+            
+            post.isLiked = !!isLiked
+            post.followStatus = followStatus
+            post.isSaved = !!isSaved
+            post.likes = Array(likeCount) // Create array to match frontend expectations
+            
+            return post
+        })
+    )
+
+    res.status(200).json({
+        message: "Posts fetched successfully",
+        posts
+    })
+}
+
+module.exports = {createPostController, getPostController, getPostDetailsController, likePostController, unlikePostController, deletePostController, getFeedController}

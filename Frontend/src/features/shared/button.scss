@@ -1,0 +1,67 @@
+/* Button Styles - Unified across app */
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.75rem;
+  padding: 0.875rem 1.5rem;
+  border-radius: var(--radius-lg);
+  border: none;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+  color: var(--color-text-primary);
+  font-size: var(--font-base);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: var(--transition-base);
+  user-select: none;
+}
+
+.button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(255, 95, 74, 0.24);
+}
+
+.button:active {
+  transform: translateY(0);
+}
+
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.button.secondary {
+  background: transparent;
+  border: 1.5px solid var(--color-border);
+  color: var(--color-text-primary);
+}
+
+.button.secondary:hover {
+  border-color: var(--color-primary);
+  background: rgba(255, 95, 74, 0.08);
+}
+
+.button.small {
+  min-height: 2rem;
+  padding: 0.5rem 1rem;
+  font-size: var(--font-sm);
+}
+
+.button.large {
+  min-height: 3.5rem;
+  padding: 1rem 2rem;
+  font-size: var(--font-lg);
+}
+
+.button.icon-only {
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  border-radius: var(--radius-full);
+}
+
+.button.rounded {
+  border-radius: var(--radius-full);
+}

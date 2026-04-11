@@ -1,0 +1,173 @@
+import { stat } from "node:fs"
+import { db } from "./Backend/src/models/post.model"
+
+db.studentsAgg.aggregate([
+    {
+        $addFields:{
+            totalMarks: {$sum: "$marks"},
+            numOfSub: {$size: "$marks"}
+        }
+    },
+    {
+        $addFields:{
+            percentage: {$divide: ['$totalMarks', '$numOfSub' ]    }
+        }
+    },
+    {
+     $addFields:{
+        grade:{
+            $cond:{
+                if:{
+                  $gte:["$percentage", 33]
+                },
+                then: "Pass",
+                else: "Fail"
+
+
+                 }
+              }
+           }
+    },
+    {
+        $project: {
+            marks: 0,
+            numOfSub: 0
+        }
+    }
+])
+
+
+
+db.studentsAgg.aggregate([
+    {
+        $addFields:{
+            totalMarks: {$sum: "$marks"},
+            numOfSub: {$size: "$marks"}
+        }
+    },
+    {
+        $addFields:{
+            percentage: {$divide: ['$totalMarks', '$numOfSub' ]    }
+        }
+    },
+    {
+     $addFields:{
+        grade:{
+$switch:{
+    branches:[
+        {
+            case: {$gte:["$percentage", 90]},
+            then: "A+"
+        },
+        {
+            case: {$gte:["$percentage", 80]},
+            then: "A"
+        },
+        {
+            case: {$gte:["$percentage", 70]},
+            then: "B+"
+        },
+        {
+            case: {$gte:["$percentage", 60]},
+            then: "B"
+        },
+        {
+            case: {$gte:["$percentage", 50]},
+            then: "C+"
+        },
+        {
+            case: {$gte:["$percentage", 40]},
+            then: "C"
+        }
+    ],
+    default:"Fail"
+}
+              }
+           }
+    },
+    {
+        $project: {
+            marks: 0,
+            numOfSub: 0
+        }
+    }
+])
+
+
+db.payments.aggregate([
+    {
+        $group: {
+            _id: "$status"
+        }
+    },
+    {
+        $project:{
+            status: "$_id",
+            _id: 0
+
+        }
+    }
+])
+
+db.payments.aggregate([
+    {
+        $group: 
+        {
+            _id: "$status",
+            numOfPayments: {$sum: 1}
+        }
+    },
+    {
+        $project:{
+            status: "$_id",
+            _id: 0
+
+        }
+    }
+])
+
+db.orders.aggregate([
+    {
+    $group: 
+    { 
+       totalRevenue: {$sum: "$totalAmount"}
+
+    }
+    },
+    {
+        $addFields:{
+           numOfItems: {$size: "$items" },
+              avgAmount: {$divide: ['$totalAmount', '$numOfItems' ]    },
+                
+              
+              
+
+        }
+    },
+   
+
+])
+
+
+
+db.orders.aggregate([
+    {
+    $group: 
+    { 
+        _id: null,
+       totalRevenue: {$sum: "$totalAmount"}
+
+    }
+    },
+])
+
+db.employees.aggregate([
+    {
+        $group:
+        {
+            _id: "$department",
+            numOfEmployees: {$sum: 1}
+            
+        }
+    }
+])
