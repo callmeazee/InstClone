@@ -1,10 +1,6 @@
-import axios from "axios";
-import { API_BASE_URL } from "../../../services/api.config";
+import { createApi } from "../../../services/api.config";
 
-const api = axios.create({
-    baseURL: API_BASE_URL,
-    withCredentials: true
-})
+const api = createApi()
 
 export const getFeed = async () => {
     try {

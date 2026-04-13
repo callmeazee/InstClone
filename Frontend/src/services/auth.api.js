@@ -1,11 +1,6 @@
-import axios from "axios";
-import { API_BASE_URL } from "./api.config";
+import { createApi } from "./api.config";
 
-
-const api = axios.create({
-    baseURL: `${API_BASE_URL}/auth`,
-    withCredentials: true
-})
+const api = createApi('/auth')
 
 const getErrorPayload = (err) => err.response?.data || err
 
@@ -16,6 +11,9 @@ export const register = async (username, email, password) => {
             email,
             password
         })
+        if (res.data?.token) {
+            localStorage.setItem('token', res.data.token)
+        }
         return res.data
     } catch (err) {
         throw getErrorPayload(err)
@@ -28,6 +26,9 @@ export const login = async (username, password) => {
             username,
             password
         })
+        if (res.data?.token) {
+            localStorage.setItem('token', res.data.token)
+        }
         return res.data
     } catch (err) {
         throw getErrorPayload(err)
@@ -46,6 +47,7 @@ export const getMe = async () => {
 export const logout = async () => {
     try {
         const res = await api.post('/logout')
+        localStorage.removeItem('token')
         return res.data
     } catch (err) {
         throw getErrorPayload(err)

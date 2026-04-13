@@ -1,10 +1,6 @@
-import axios from "axios";
-import { API_BASE_URL } from "./api.config";
+import { createApi } from "./api.config";
 
-const api = axios.create({
-    baseURL: API_BASE_URL,
-    withCredentials: true
-})
+const api = createApi()
 
 export const followUser = async (username) => {
     try {
