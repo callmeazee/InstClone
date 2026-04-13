@@ -47,7 +47,7 @@ const Comments = ({ postId, onCommentAdded }) => {
       const res = await createComment(postId, newComment)
       
       // Add new comment to the list
-      setComments([res.comment, ...comments])
+      setComments((prevComments) => [res.comment, ...prevComments])
       setNewComment('')
       
       if (onCommentAdded) {
@@ -65,7 +65,7 @@ const Comments = ({ postId, onCommentAdded }) => {
   const handleDeleteComment = async (commentId) => {
     try {
       await deleteComment(commentId)
-      setComments(comments.filter(c => c._id !== commentId))
+      setComments((prevComments) => prevComments.filter((comment) => comment._id !== commentId))
     } catch (err) {
       console.error('Failed to delete comment:', err)
       setError('Failed to delete comment')

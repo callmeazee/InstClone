@@ -23,8 +23,21 @@ connectToDb()
 app.use(express.json())
 app.use(cookieParser())
 
-// CORS configuration - allow multiple ports for development
-const allowedOrigins = ['http://localhost:5173', 'http://localhost:5174', 'http://localhost:5175', 'http://localhost:5176', 'http://localhost:5177']
+const defaultOrigins = [
+    'http://localhost:5173',
+    'http://localhost:5174',
+    'http://localhost:5175',
+    'http://localhost:5176',
+    'http://localhost:5177',
+    'http://127.0.0.1:5173'
+]
+
+const configuredOrigins = (process.env.CLIENT_ORIGINS || '')
+    .split(',')
+    .map((origin) => origin.trim())
+    .filter(Boolean)
+
+const allowedOrigins = [...new Set([...defaultOrigins, ...configuredOrigins])]
 app.use(cors({
     origin: (origin, callback) => {
         if (!origin || allowedOrigins.includes(origin)) {

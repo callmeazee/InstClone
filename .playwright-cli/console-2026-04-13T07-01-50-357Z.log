@@ -1,0 +1,308 @@
+[     883ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=96ccd6c1:14337
+[    1036ms] [ERROR] Failed to load resource: the server responded with a status of 401 (Unauthorized) @ http://127.0.0.1:5173/api/auth/me:0
+[   11619ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) %o @ http://127.0.0.1:5173/login:0
+[   24739ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:5173/api/auth/login:0
+[   24743ms] [ERROR] Login error: Error: user not found
+    at handleLogin (http://127.0.0.1:5173/src/features/auth/hooks/useAuth.js:15:10)
+    at async handleSubmit (http://127.0.0.1:5173/src/features/auth/pages/Login.jsx:43:16) @ http://127.0.0.1:5173/@vite/client:509
+[   24852ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) @ http://127.0.0.1:5173/login:0
+[   26993ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) %o @ http://127.0.0.1:5173/register:0
+[   95599ms] [LOG] Fetched pending requests: {requests: Array(0), message: Pending requests fetched successfully} @ http://127.0.0.1:5173/src/features/user/pages/FollowRequests.jsx:27
+[  131469ms] [LOG] Fetched pending requests: {requests: Array(0), message: Pending requests fetched successfully} @ http://127.0.0.1:5173/src/features/user/pages/FollowRequests.jsx:27
+[  169382ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:5173/api/users/follow/Unknown:0
+[  169384ms] [ERROR] followUser failed: {message: User not found} @ http://127.0.0.1:5173/@vite/client:509
+[  169384ms] [ERROR] Follow error: AxiosError: Request failed with status code 404
+    at settle (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:1634:14)
+    at XMLHttpRequest.onloadend (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:1951:4)
+    at Axios$1.request (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:2520:37)
+    at async followUser (http://127.0.0.1:5173/src/services/user.api.js:9:15)
+    at async handleFollow (http://127.0.0.1:5173/src/features/post/components/Post.jsx:103:5) @ http://127.0.0.1:5173/@vite/client:509
+[  178638ms] [LOG] Fetched pending requests: {requests: Array(0), message: Pending requests fetched successfully} @ http://127.0.0.1:5173/src/features/user/pages/FollowRequests.jsx:27
+[  193033ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=96ccd6c1:14337
+[  226042ms] [LOG] Fetched pending requests: {requests: Array(0), message: Pending requests fetched successfully} @ http://127.0.0.1:5173/src/features/user/pages/FollowRequests.jsx:27
+[  253800ms] [LOG] Fetched pending requests: {requests: Array(0), message: Pending requests fetched successfully} @ http://127.0.0.1:5173/src/features/user/pages/FollowRequests.jsx:27
+[  267756ms] [LOG] Fetched pending requests: {requests: Array(0), message: Pending requests fetched successfully} @ http://127.0.0.1:5173/src/features/user/pages/FollowRequests.jsx:27
+[  276845ms] [ERROR] Failed to load resource: the server responded with a status of 400 (Bad Request) @ http://127.0.0.1:5173/api/posts/like/69db73d3a9dcee6bf810f966:0
+[  276847ms] [ERROR] likePost failed: {message: You have already liked this post} @ http://127.0.0.1:5173/@vite/client:509
+[  276848ms] [ERROR] Like error: AxiosError: Request failed with status code 400
+    at settle (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:1634:14)
+    at XMLHttpRequest.onloadend (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:1951:4)
+    at Axios$1.request (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:2520:37)
+    at async likePost (http://127.0.0.1:5173/src/features/post/services/post.api.js:18:15)
+    at async handleLike (http://127.0.0.1:5173/src/features/post/components/Post.jsx:82:5) @ http://127.0.0.1:5173/@vite/client:509
+[  308715ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) %o @ http://127.0.0.1:5173/login:0
+[  318814ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:5173/api/auth/login:0
+[  318815ms] [ERROR] Login error: Error: user not found
+    at handleLogin (http://127.0.0.1:5173/src/features/auth/hooks/useAuth.js:15:10)
+    at async handleSubmit (http://127.0.0.1:5173/src/features/auth/pages/Login.jsx:43:16) @ http://127.0.0.1:5173/@vite/client:509
+[  318919ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) @ http://127.0.0.1:5173/login:0
+[  331056ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:5173/api/auth/login:0
+[  331057ms] [ERROR] Login error: Error: user not found
+    at handleLogin (http://127.0.0.1:5173/src/features/auth/hooks/useAuth.js:15:10)
+    at async handleSubmit (http://127.0.0.1:5173/src/features/auth/pages/Login.jsx:43:16) @ http://127.0.0.1:5173/@vite/client:509
+[  331163ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) @ http://127.0.0.1:5173/login:0
+[  339259ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:5173/api/auth/login:0
+[  339261ms] [ERROR] Login error: Error: user not found
+    at handleLogin (http://127.0.0.1:5173/src/features/auth/hooks/useAuth.js:15:10)
+    at async handleSubmit (http://127.0.0.1:5173/src/features/auth/pages/Login.jsx:43:16) @ http://127.0.0.1:5173/@vite/client:509
+[  339366ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) @ http://127.0.0.1:5173/login:0
+[  349103ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:5173/api/auth/login:0
+[  349105ms] [ERROR] Login error: Error: user not found
+    at handleLogin (http://127.0.0.1:5173/src/features/auth/hooks/useAuth.js:15:10)
+    at async handleSubmit (http://127.0.0.1:5173/src/features/auth/pages/Login.jsx:43:16) @ http://127.0.0.1:5173/@vite/client:509
+[  349210ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) @ http://127.0.0.1:5173/login:0
+[  357263ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:5173/api/auth/login:0
+[  357264ms] [ERROR] Login error: Error: user not found
+    at handleLogin (http://127.0.0.1:5173/src/features/auth/hooks/useAuth.js:15:10)
+    at async handleSubmit (http://127.0.0.1:5173/src/features/auth/pages/Login.jsx:43:16) @ http://127.0.0.1:5173/@vite/client:509
+[  357370ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) @ http://127.0.0.1:5173/login:0
+[  368830ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:5173/api/auth/login:0
+[  368831ms] [ERROR] Login error: Error: user not found
+    at handleLogin (http://127.0.0.1:5173/src/features/auth/hooks/useAuth.js:15:10)
+    at async handleSubmit (http://127.0.0.1:5173/src/features/auth/pages/Login.jsx:43:16) @ http://127.0.0.1:5173/@vite/client:509
+[  368939ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) @ http://127.0.0.1:5173/login:0
+[  374780ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:5173/api/auth/login:0
+[  374781ms] [ERROR] Login error: Error: user not found
+    at handleLogin (http://127.0.0.1:5173/src/features/auth/hooks/useAuth.js:15:10)
+    at async handleSubmit (http://127.0.0.1:5173/src/features/auth/pages/Login.jsx:43:16) @ http://127.0.0.1:5173/@vite/client:509
+[  374886ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) @ http://127.0.0.1:5173/login:0
+[  390627ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:5173/api/auth/login:0
+[  390628ms] [ERROR] Login error: Error: user not found
+    at handleLogin (http://127.0.0.1:5173/src/features/auth/hooks/useAuth.js:15:10)
+    at async handleSubmit (http://127.0.0.1:5173/src/features/auth/pages/Login.jsx:43:16) @ http://127.0.0.1:5173/@vite/client:509
+[  390733ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) @ http://127.0.0.1:5173/login:0
+[  398750ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:5173/api/auth/login:0
+[  398751ms] [ERROR] Login error: Error: user not found
+    at handleLogin (http://127.0.0.1:5173/src/features/auth/hooks/useAuth.js:15:10)
+    at async handleSubmit (http://127.0.0.1:5173/src/features/auth/pages/Login.jsx:43:16) @ http://127.0.0.1:5173/@vite/client:509
+[  398855ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) @ http://127.0.0.1:5173/login:0
+[  420091ms] [LOG] {message: Logged in successfully, user: Object} @ http://127.0.0.1:5173/src/features/auth/pages/Login.jsx:43
+[  432033ms] [LOG] Fetched pending requests: {requests: Array(1), message: Pending requests fetched successfully} @ http://127.0.0.1:5173/src/features/user/pages/FollowRequests.jsx:27
+[  434070ms] [LOG] Accepting follow request from: test @ http://127.0.0.1:5173/src/features/user/pages/FollowRequests.jsx:39
+[  648235ms] [LOG] Fetched pending requests: {requests: Array(0), message: Pending requests fetched successfully} @ http://127.0.0.1:5173/src/features/user/pages/FollowRequests.jsx:27
+[  656758ms] [ERROR] Failed to load resource: the server responded with a status of 409 (Conflict) @ http://127.0.0.1:5173/api/users/follow/codex_smoke_1776064115_a:0
+[  656759ms] [ERROR] followUser failed: {message: Follow request already exists} @ http://127.0.0.1:5173/@vite/client:509
+[  656759ms] [ERROR] Follow error: AxiosError: Request failed with status code 409
+    at settle (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:1634:14)
+    at XMLHttpRequest.onloadend (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:1951:4)
+    at Axios$1.request (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:2520:37)
+    at async followUser (http://127.0.0.1:5173/src/services/user.api.js:9:15)
+    at async handleFollow (http://127.0.0.1:5173/src/features/post/components/Post.jsx:103:5) @ http://127.0.0.1:5173/@vite/client:509
+[  669887ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:5173/api/users/follow/Unknown:0
+[  669887ms] [ERROR] followUser failed: {message: User not found} @ http://127.0.0.1:5173/@vite/client:509
+[  669888ms] [ERROR] Follow error: AxiosError: Request failed with status code 404
+    at settle (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:1634:14)
+    at XMLHttpRequest.onloadend (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:1951:4)
+    at Axios$1.request (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:2520:37)
+    at async followUser (http://127.0.0.1:5173/src/services/user.api.js:9:15)
+    at async handleFollow (http://127.0.0.1:5173/src/features/post/components/Post.jsx:103:5) @ http://127.0.0.1:5173/@vite/client:509
+[  771852ms] [ERROR] Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://127.0.0.1:5173/api/users/requests:0
+[  771855ms] [ERROR] getPendingRequests failed: Request failed with status code 502 @ http://127.0.0.1:5173/@vite/client:509
+[  771858ms] [ERROR] Failed to fetch pending requests count: AxiosError: Request failed with status code 502
+    at settle (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:1634:14)
+    at XMLHttpRequest.onloadend (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:1951:4)
+    at Axios$1.request (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:2520:37)
+    at async getPendingRequests (http://127.0.0.1:5173/src/services/user.api.js:36:15)
+    at async fetchPendingRequestCount (http://127.0.0.1:5173/src/features/shared/components/Nav.jsx:166:18) @ http://127.0.0.1:5173/@vite/client:509
+[ 1438830ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:5173/api/users/requests:0
+[ 1438840ms] [ERROR] getPendingRequests failed: {message: Server error: getaddrinfo ENOTFOUND ac-idijlye-shard-00-00.pdzag0u.mongodb.net} @ http://127.0.0.1:5173/@vite/client:509
+[ 1438846ms] [ERROR] Failed to fetch pending requests count: AxiosError: Request failed with status code 500
+    at settle (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:1634:14)
+    at XMLHttpRequest.onloadend (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:1951:4)
+    at Axios$1.request (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:2520:37)
+    at async getPendingRequests (http://127.0.0.1:5173/src/services/user.api.js:36:15)
+    at async fetchPendingRequestCount (http://127.0.0.1:5173/src/features/shared/components/Nav.jsx:166:18) @ http://127.0.0.1:5173/@vite/client:509
+[ 1468931ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:5173/api/users/requests:0
+[ 1468937ms] [ERROR] getPendingRequests failed: {message: Server error: getaddrinfo ENOTFOUND ac-idijlye-shard-00-00.pdzag0u.mongodb.net} @ http://127.0.0.1:5173/@vite/client:509
+[ 1468939ms] [ERROR] Failed to fetch pending requests count: AxiosError: Request failed with status code 500
+    at settle (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:1634:14)
+    at XMLHttpRequest.onloadend (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:1951:4)
+    at Axios$1.request (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:2520:37)
+    at async getPendingRequests (http://127.0.0.1:5173/src/services/user.api.js:36:15)
+    at async fetchPendingRequestCount (http://127.0.0.1:5173/src/features/shared/components/Nav.jsx:166:18) @ http://127.0.0.1:5173/@vite/client:509
+[ 1498963ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:5173/api/users/requests:0
+[ 1498965ms] [ERROR] getPendingRequests failed: {message: Server error: getaddrinfo ENOTFOUND ac-idijlye-shard-00-00.pdzag0u.mongodb.net} @ http://127.0.0.1:5173/@vite/client:509
+[ 1498969ms] [ERROR] Failed to fetch pending requests count: AxiosError: Request failed with status code 500
+    at settle (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:1634:14)
+    at XMLHttpRequest.onloadend (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:1951:4)
+    at Axios$1.request (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:2520:37)
+    at async getPendingRequests (http://127.0.0.1:5173/src/services/user.api.js:36:15)
+    at async fetchPendingRequestCount (http://127.0.0.1:5173/src/features/shared/components/Nav.jsx:166:18) @ http://127.0.0.1:5173/@vite/client:509
+[ 1528998ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:5173/api/users/requests:0
+[ 1529001ms] [ERROR] getPendingRequests failed: {message: Server error: getaddrinfo ENOTFOUND ac-idijlye-shard-00-00.pdzag0u.mongodb.net} @ http://127.0.0.1:5173/@vite/client:509
+[ 1529003ms] [ERROR] Failed to fetch pending requests count: AxiosError: Request failed with status code 500
+    at settle (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:1634:14)
+    at XMLHttpRequest.onloadend (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:1951:4)
+    at Axios$1.request (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:2520:37)
+    at async getPendingRequests (http://127.0.0.1:5173/src/services/user.api.js:36:15)
+    at async fetchPendingRequestCount (http://127.0.0.1:5173/src/features/shared/components/Nav.jsx:166:18) @ http://127.0.0.1:5173/@vite/client:509
+[ 1550513ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:5173/src/features/post/style/post-interactions.scss?t=1776065260760:0
+[ 1550514ms] [ERROR] [vite] Failed to reload /src/features/post/style/post-interactions.scss. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://127.0.0.1:5173/@vite/client:509
+[ 1559048ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:5173/api/users/requests:0
+[ 1559055ms] [ERROR] getPendingRequests failed: {message: Server error: getaddrinfo ENOTFOUND ac-idijlye-shard-00-00.pdzag0u.mongodb.net} @ http://127.0.0.1:5173/@vite/client:509
+[ 1559057ms] [ERROR] Failed to fetch pending requests count: AxiosError: Request failed with status code 500
+    at settle (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:1634:14)
+    at XMLHttpRequest.onloadend (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:1951:4)
+    at Axios$1.request (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:2520:37)
+    at async getPendingRequests (http://127.0.0.1:5173/src/services/user.api.js:36:15)
+    at async fetchPendingRequestCount (http://127.0.0.1:5173/src/features/shared/components/Nav.jsx:166:18) @ http://127.0.0.1:5173/@vite/client:509
+[ 1589174ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:5173/api/users/requests:0
+[ 1589179ms] [ERROR] getPendingRequests failed: {message: Server error: getaddrinfo ENOTFOUND ac-idijlye-shard-00-00.pdzag0u.mongodb.net} @ http://127.0.0.1:5173/@vite/client:509
+[ 1589180ms] [ERROR] Failed to fetch pending requests count: AxiosError: Request failed with status code 500
+    at settle (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:1634:14)
+    at XMLHttpRequest.onloadend (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:1951:4)
+    at Axios$1.request (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:2520:37)
+    at async getPendingRequests (http://127.0.0.1:5173/src/services/user.api.js:36:15)
+    at async fetchPendingRequestCount (http://127.0.0.1:5173/src/features/shared/components/Nav.jsx:166:18) @ http://127.0.0.1:5173/@vite/client:509
+[ 1619210ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:5173/api/users/requests:0
+[ 1619213ms] [ERROR] getPendingRequests failed: {message: Server error: getaddrinfo ENOTFOUND ac-idijlye-shard-00-00.pdzag0u.mongodb.net} @ http://127.0.0.1:5173/@vite/client:509
+[ 1619215ms] [ERROR] Failed to fetch pending requests count: AxiosError: Request failed with status code 500
+    at settle (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:1634:14)
+    at XMLHttpRequest.onloadend (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:1951:4)
+    at Axios$1.request (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:2520:37)
+    at async getPendingRequests (http://127.0.0.1:5173/src/services/user.api.js:36:15)
+    at async fetchPendingRequestCount (http://127.0.0.1:5173/src/features/shared/components/Nav.jsx:166:18) @ http://127.0.0.1:5173/@vite/client:509
+[ 1649246ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:5173/api/users/requests:0
+[ 1649249ms] [ERROR] getPendingRequests failed: {message: Server error: getaddrinfo ENOTFOUND ac-idijlye-shard-00-00.pdzag0u.mongodb.net} @ http://127.0.0.1:5173/@vite/client:509
+[ 1649250ms] [ERROR] Failed to fetch pending requests count: AxiosError: Request failed with status code 500
+    at settle (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:1634:14)
+    at XMLHttpRequest.onloadend (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:1951:4)
+    at Axios$1.request (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:2520:37)
+    at async getPendingRequests (http://127.0.0.1:5173/src/services/user.api.js:36:15)
+    at async fetchPendingRequestCount (http://127.0.0.1:5173/src/features/shared/components/Nav.jsx:166:18) @ http://127.0.0.1:5173/@vite/client:509
+[ 1679265ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:5173/api/users/requests:0
+[ 1679266ms] [ERROR] getPendingRequests failed: {message: Server error: getaddrinfo ENOTFOUND ac-idijlye-shard-00-00.pdzag0u.mongodb.net} @ http://127.0.0.1:5173/@vite/client:509
+[ 1679267ms] [ERROR] Failed to fetch pending requests count: AxiosError: Request failed with status code 500
+    at settle (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:1634:14)
+    at XMLHttpRequest.onloadend (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:1951:4)
+    at Axios$1.request (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:2520:37)
+    at async getPendingRequests (http://127.0.0.1:5173/src/services/user.api.js:36:15)
+    at async fetchPendingRequestCount (http://127.0.0.1:5173/src/features/shared/components/Nav.jsx:166:18) @ http://127.0.0.1:5173/@vite/client:509
+[ 1709292ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:5173/api/users/requests:0
+[ 1709300ms] [ERROR] getPendingRequests failed: {message: Server error: getaddrinfo ENOTFOUND ac-idijlye-shard-00-00.pdzag0u.mongodb.net} @ http://127.0.0.1:5173/@vite/client:509
+[ 1709301ms] [ERROR] Failed to fetch pending requests count: AxiosError: Request failed with status code 500
+    at settle (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:1634:14)
+    at XMLHttpRequest.onloadend (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:1951:4)
+    at Axios$1.request (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:2520:37)
+    at async getPendingRequests (http://127.0.0.1:5173/src/services/user.api.js:36:15)
+    at async fetchPendingRequestCount (http://127.0.0.1:5173/src/features/shared/components/Nav.jsx:166:18) @ http://127.0.0.1:5173/@vite/client:509
+[ 1739326ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:5173/api/users/requests:0
+[ 1739328ms] [ERROR] getPendingRequests failed: {message: Server error: getaddrinfo ENOTFOUND ac-idijlye-shard-00-00.pdzag0u.mongodb.net} @ http://127.0.0.1:5173/@vite/client:509
+[ 1739330ms] [ERROR] Failed to fetch pending requests count: AxiosError: Request failed with status code 500
+    at settle (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:1634:14)
+    at XMLHttpRequest.onloadend (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:1951:4)
+    at Axios$1.request (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:2520:37)
+    at async getPendingRequests (http://127.0.0.1:5173/src/services/user.api.js:36:15)
+    at async fetchPendingRequestCount (http://127.0.0.1:5173/src/features/shared/components/Nav.jsx:166:18) @ http://127.0.0.1:5173/@vite/client:509
+[ 1769358ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:5173/api/users/requests:0
+[ 1769360ms] [ERROR] getPendingRequests failed: {message: Server error: getaddrinfo ENOTFOUND ac-idijlye-shard-00-00.pdzag0u.mongodb.net} @ http://127.0.0.1:5173/@vite/client:509
+[ 1769361ms] [ERROR] Failed to fetch pending requests count: AxiosError: Request failed with status code 500
+    at settle (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:1634:14)
+    at XMLHttpRequest.onloadend (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:1951:4)
+    at Axios$1.request (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:2520:37)
+    at async getPendingRequests (http://127.0.0.1:5173/src/services/user.api.js:36:15)
+    at async fetchPendingRequestCount (http://127.0.0.1:5173/src/features/shared/components/Nav.jsx:166:18) @ http://127.0.0.1:5173/@vite/client:509
+[ 1799383ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:5173/api/users/requests:0
+[ 1799388ms] [ERROR] getPendingRequests failed: {message: Server error: getaddrinfo ENOTFOUND ac-idijlye-shard-00-00.pdzag0u.mongodb.net} @ http://127.0.0.1:5173/@vite/client:509
+[ 1799389ms] [ERROR] Failed to fetch pending requests count: AxiosError: Request failed with status code 500
+    at settle (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:1634:14)
+    at XMLHttpRequest.onloadend (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:1951:4)
+    at Axios$1.request (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:2520:37)
+    at async getPendingRequests (http://127.0.0.1:5173/src/services/user.api.js:36:15)
+    at async fetchPendingRequestCount (http://127.0.0.1:5173/src/features/shared/components/Nav.jsx:166:18) @ http://127.0.0.1:5173/@vite/client:509
+[ 1829405ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:5173/api/users/requests:0
+[ 1829411ms] [ERROR] getPendingRequests failed: {message: Server error: getaddrinfo ENOTFOUND ac-idijlye-shard-00-00.pdzag0u.mongodb.net} @ http://127.0.0.1:5173/@vite/client:509
+[ 1829412ms] [ERROR] Failed to fetch pending requests count: AxiosError: Request failed with status code 500
+    at settle (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:1634:14)
+    at XMLHttpRequest.onloadend (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:1951:4)
+    at Axios$1.request (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:2520:37)
+    at async getPendingRequests (http://127.0.0.1:5173/src/services/user.api.js:36:15)
+    at async fetchPendingRequestCount (http://127.0.0.1:5173/src/features/shared/components/Nav.jsx:166:18) @ http://127.0.0.1:5173/@vite/client:509
+[ 1859433ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:5173/api/users/requests:0
+[ 1859436ms] [ERROR] getPendingRequests failed: {message: Server error: getaddrinfo ENOTFOUND ac-idijlye-shard-00-00.pdzag0u.mongodb.net} @ http://127.0.0.1:5173/@vite/client:509
+[ 1859438ms] [ERROR] Failed to fetch pending requests count: AxiosError: Request failed with status code 500
+    at settle (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:1634:14)
+    at XMLHttpRequest.onloadend (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:1951:4)
+    at Axios$1.request (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:2520:37)
+    at async getPendingRequests (http://127.0.0.1:5173/src/services/user.api.js:36:15)
+    at async fetchPendingRequestCount (http://127.0.0.1:5173/src/features/shared/components/Nav.jsx:166:18) @ http://127.0.0.1:5173/@vite/client:509
+[ 1889462ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:5173/api/users/requests:0
+[ 1889469ms] [ERROR] getPendingRequests failed: {message: Server error: getaddrinfo ENOTFOUND ac-idijlye-shard-00-00.pdzag0u.mongodb.net} @ http://127.0.0.1:5173/@vite/client:509
+[ 1889470ms] [ERROR] Failed to fetch pending requests count: AxiosError: Request failed with status code 500
+    at settle (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:1634:14)
+    at XMLHttpRequest.onloadend (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:1951:4)
+    at Axios$1.request (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:2520:37)
+    at async getPendingRequests (http://127.0.0.1:5173/src/services/user.api.js:36:15)
+    at async fetchPendingRequestCount (http://127.0.0.1:5173/src/features/shared/components/Nav.jsx:166:18) @ http://127.0.0.1:5173/@vite/client:509
+[ 1919488ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:5173/api/users/requests:0
+[ 1919490ms] [ERROR] getPendingRequests failed: {message: Server error: getaddrinfo ENOTFOUND ac-idijlye-shard-00-00.pdzag0u.mongodb.net} @ http://127.0.0.1:5173/@vite/client:509
+[ 1919491ms] [ERROR] Failed to fetch pending requests count: AxiosError: Request failed with status code 500
+    at settle (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:1634:14)
+    at XMLHttpRequest.onloadend (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:1951:4)
+    at Axios$1.request (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:2520:37)
+    at async getPendingRequests (http://127.0.0.1:5173/src/services/user.api.js:36:15)
+    at async fetchPendingRequestCount (http://127.0.0.1:5173/src/features/shared/components/Nav.jsx:166:18) @ http://127.0.0.1:5173/@vite/client:509
+[ 1949528ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:5173/api/users/requests:0
+[ 1949534ms] [ERROR] getPendingRequests failed: {message: Server error: getaddrinfo ENOTFOUND ac-idijlye-shard-00-00.pdzag0u.mongodb.net} @ http://127.0.0.1:5173/@vite/client:509
+[ 1949535ms] [ERROR] Failed to fetch pending requests count: AxiosError: Request failed with status code 500
+    at settle (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:1634:14)
+    at XMLHttpRequest.onloadend (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:1951:4)
+    at Axios$1.request (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:2520:37)
+    at async getPendingRequests (http://127.0.0.1:5173/src/services/user.api.js:36:15)
+    at async fetchPendingRequestCount (http://127.0.0.1:5173/src/features/shared/components/Nav.jsx:166:18) @ http://127.0.0.1:5173/@vite/client:509
+[ 1979560ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:5173/api/users/requests:0
+[ 1979562ms] [ERROR] getPendingRequests failed: {message: Server error: getaddrinfo ENOTFOUND ac-idijlye-shard-00-00.pdzag0u.mongodb.net} @ http://127.0.0.1:5173/@vite/client:509
+[ 1979564ms] [ERROR] Failed to fetch pending requests count: AxiosError: Request failed with status code 500
+    at settle (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:1634:14)
+    at XMLHttpRequest.onloadend (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:1951:4)
+    at Axios$1.request (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:2520:37)
+    at async getPendingRequests (http://127.0.0.1:5173/src/services/user.api.js:36:15)
+    at async fetchPendingRequestCount (http://127.0.0.1:5173/src/features/shared/components/Nav.jsx:166:18) @ http://127.0.0.1:5173/@vite/client:509
+[ 2009592ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:5173/api/users/requests:0
+[ 2009594ms] [ERROR] getPendingRequests failed: {message: Server error: getaddrinfo ENOTFOUND ac-idijlye-shard-00-00.pdzag0u.mongodb.net} @ http://127.0.0.1:5173/@vite/client:509
+[ 2009595ms] [ERROR] Failed to fetch pending requests count: AxiosError: Request failed with status code 500
+    at settle (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:1634:14)
+    at XMLHttpRequest.onloadend (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:1951:4)
+    at Axios$1.request (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:2520:37)
+    at async getPendingRequests (http://127.0.0.1:5173/src/services/user.api.js:36:15)
+    at async fetchPendingRequestCount (http://127.0.0.1:5173/src/features/shared/components/Nav.jsx:166:18) @ http://127.0.0.1:5173/@vite/client:509
+[ 2039613ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:5173/api/users/requests:0
+[ 2039614ms] [ERROR] getPendingRequests failed: {message: Server error: getaddrinfo ENOTFOUND ac-idijlye-shard-00-00.pdzag0u.mongodb.net} @ http://127.0.0.1:5173/@vite/client:509
+[ 2039615ms] [ERROR] Failed to fetch pending requests count: AxiosError: Request failed with status code 500
+    at settle (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:1634:14)
+    at XMLHttpRequest.onloadend (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:1951:4)
+    at Axios$1.request (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:2520:37)
+    at async getPendingRequests (http://127.0.0.1:5173/src/services/user.api.js:36:15)
+    at async fetchPendingRequestCount (http://127.0.0.1:5173/src/features/shared/components/Nav.jsx:166:18) @ http://127.0.0.1:5173/@vite/client:509
+[ 2069643ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:5173/api/users/requests:0
+[ 2069647ms] [ERROR] getPendingRequests failed: {message: Server error: getaddrinfo ENOTFOUND ac-idijlye-shard-00-00.pdzag0u.mongodb.net} @ http://127.0.0.1:5173/@vite/client:509
+[ 2069648ms] [ERROR] Failed to fetch pending requests count: AxiosError: Request failed with status code 500
+    at settle (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:1634:14)
+    at XMLHttpRequest.onloadend (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:1951:4)
+    at Axios$1.request (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:2520:37)
+    at async getPendingRequests (http://127.0.0.1:5173/src/services/user.api.js:36:15)
+    at async fetchPendingRequestCount (http://127.0.0.1:5173/src/features/shared/components/Nav.jsx:166:18) @ http://127.0.0.1:5173/@vite/client:509
+[ 2099683ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:5173/api/users/requests:0
+[ 2099686ms] [ERROR] getPendingRequests failed: {message: Server error: getaddrinfo ENOTFOUND ac-idijlye-shard-00-00.pdzag0u.mongodb.net} @ http://127.0.0.1:5173/@vite/client:509
+[ 2099687ms] [ERROR] Failed to fetch pending requests count: AxiosError: Request failed with status code 500
+    at settle (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:1634:14)
+    at XMLHttpRequest.onloadend (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:1951:4)
+    at Axios$1.request (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:2520:37)
+    at async getPendingRequests (http://127.0.0.1:5173/src/services/user.api.js:36:15)
+    at async fetchPendingRequestCount (http://127.0.0.1:5173/src/features/shared/components/Nav.jsx:166:18) @ http://127.0.0.1:5173/@vite/client:509
+[ 2129732ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:5173/api/users/requests:0
+[ 2129736ms] [ERROR] getPendingRequests failed: {message: Server error: getaddrinfo ENOTFOUND ac-idijlye-shard-00-00.pdzag0u.mongodb.net} @ http://127.0.0.1:5173/@vite/client:509
+[ 2129740ms] [ERROR] Failed to fetch pending requests count: AxiosError: Request failed with status code 500
+    at settle (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:1634:14)
+    at XMLHttpRequest.onloadend (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:1951:4)
+    at Axios$1.request (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:2520:37)
+    at async getPendingRequests (http://127.0.0.1:5173/src/services/user.api.js:36:15)
+    at async fetchPendingRequestCount (http://127.0.0.1:5173/src/features/shared/components/Nav.jsx:166:18) @ http://127.0.0.1:5173/@vite/client:509
+[ 2159763ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:5173/api/users/requests:0
+[ 2159765ms] [ERROR] getPendingRequests failed: {message: Server error: getaddrinfo ENOTFOUND ac-idijlye-shard-00-00.pdzag0u.mongodb.net} @ http://127.0.0.1:5173/@vite/client:509
+[ 2159766ms] [ERROR] Failed to fetch pending requests count: AxiosError: Request failed with status code 500
+    at settle (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:1634:14)
+    at XMLHttpRequest.onloadend (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:1951:4)
+    at Axios$1.request (http://127.0.0.1:5173/node_modules/.vite/deps/axios.js?v=fdd2dbfe:2520:37)
+    at async getPendingRequests (http://127.0.0.1:5173/src/services/user.api.js:36:15)
+    at async fetchPendingRequestCount (http://127.0.0.1:5173/src/features/shared/components/Nav.jsx:166:18) @ http://127.0.0.1:5173/@vite/client:509

@@ -27,12 +27,12 @@ authRouter.post('/login', authController.loginController )
 
 authRouter.post('/logout', identifyUser, authController.logoutController )    
 
-/* @route GET: /api/auth/me  
+/* @route GET: /api/auth/me
 @desc get the authenticated user details
 @access private
-
 */
 
+authRouter.get('/me', identifyUser, authController.getMeController)
 authRouter.get('/get-me', identifyUser, authController.getMeController)
 
 

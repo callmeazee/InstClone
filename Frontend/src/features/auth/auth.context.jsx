@@ -1,57 +1,33 @@
 /* eslint-disable react-refresh/only-export-components */
-import { createContext, useState, useEffect } from "react";
-import { getMe } from "../../services/auth.api.js";
+import { createContext, useEffect, useState } from "react";
 
 export const AuthContext = createContext()
 
-export const AuthProvider = ({children}) => {
-    const [user, setUser] = useState(null)
-    const [loading, setLoading] = useState(true)
-    const [isInitialized, setIsInitialized] = useState(false)
+export const AuthProvider = ({ children, initialUser = null, isInitialized = false }) => {
+    const [user, setUser] = useState(initialUser)
+    const [loading, setLoading] = useState(false)
+    const [authInitialized, setAuthInitialized] = useState(isInitialized)
 
-    // Load user from localStorage on mount
     useEffect(() => {
-        const initializeAuth = async () => {
-            try {
-                const storedUser = localStorage.getItem('user')
-                if (storedUser) {
-                    const parsedUser = JSON.parse(storedUser)
-                    setUser(parsedUser)
-                } else {
-                    // Try to fetch user from backend if no stored user
-                    try {
-                        const res = await getMe()
-                        if (res.user) {
-                            setUser(res.user)
-                            localStorage.setItem('user', JSON.stringify(res.user))
-                        }
-                    } catch (err) {
-                        // User not authenticated, that's okay
-                        console.log('User not authenticated on load')
-                    }
-                }
-            } catch (err) {
-                console.error('Error initializing auth:', err)
-            } finally {
-                setLoading(false)
-                setIsInitialized(true)
-            }
-        }
-
-        initializeAuth()
-    }, [])
+        setUser(initialUser)
+        setAuthInitialized(isInitialized)
+    }, [initialUser, isInitialized])
 
     // Persist user to localStorage whenever it changes
     useEffect(() => {
+        if (!authInitialized) {
+            return
+        }
+
         if (user) {
             localStorage.setItem('user', JSON.stringify(user))
         } else {
             localStorage.removeItem('user')
         }
-    }, [user])
+    }, [authInitialized, user])
 
 return (
-    <AuthContext.Provider value={{user, setUser, loading, setLoading, isInitialized}}>
+    <AuthContext.Provider value={{user, setUser, loading, setLoading, isInitialized: authInitialized}}>
         {children}
     </AuthContext.Provider>
 )

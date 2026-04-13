@@ -3,6 +3,7 @@ import { useAuth } from '../../auth/hooks/useAuth'
 import { useNavigate } from 'react-router-dom'
 import { getPendingRequests, acceptFollowRequest, rejectFollowRequest } from '../../../services/user.api'
 import { getConsistentAvatar } from '../../../utils/avatars'
+import Nav from '../../shared/components/Nav'
 import '../style/follow-requests.scss'
 
 const FollowRequests = () => {
@@ -79,7 +80,8 @@ const FollowRequests = () => {
 
   if (!isInitialized) {
     return (
-      <div className="follow-requests">
+      <div className="follow-requests app-shell-page">
+        <Nav />
         <div className="container">
           <div className="loading">
             <div className="spinner"></div>
@@ -92,7 +94,8 @@ const FollowRequests = () => {
 
   if (!user) {
     return (
-      <div className="follow-requests">
+      <div className="follow-requests app-shell-page">
+        <Nav />
         <div className="container">
           <p className="not-auth">Please login to view follow requests</p>
         </div>
@@ -102,7 +105,8 @@ const FollowRequests = () => {
 
   if (loading) {
     return (
-      <div className="follow-requests">
+      <div className="follow-requests app-shell-page">
+        <Nav />
         <div className="container">
           <div className="loading">
             <div className="spinner"></div>
@@ -114,7 +118,8 @@ const FollowRequests = () => {
   }
 
   return (
-    <div className="follow-requests">
+    <div className="follow-requests app-shell-page">
+      <Nav />
       <div className="container">
         <div className="header">
           <h1>Follow Requests</h1>
@@ -145,9 +150,7 @@ const FollowRequests = () => {
             <div className="empty-icon">✨</div>
             <h2>No pending requests</h2>
             <p>When someone sends you a follow request, it will appear here</p>
-            <p style={{fontSize: '12px', color: 'rgba(255,255,255,0.5)', marginTop: '20px'}}>
-              💡 Tip: Have another user click the Follow button on your profile posts to send you a follow request
-            </p>
+            <p className="empty-tip">Tip: ask another user to follow one of your posts and the request will appear here.</p>
             <button 
               className="btn-back-home"
               onClick={() => navigate('/feed')}

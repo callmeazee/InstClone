@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../auth/hooks/useAuth.js'
 import './style/home.scss'
@@ -7,19 +7,21 @@ const Home = () => {
   const navigate = useNavigate()
   const { user } = useAuth()
 
-  // If user is logged in, redirect to feed
-  if (user) {
-    navigate('/feed')
-    return null
-  }
+  useEffect(() => {
+    if (user) {
+      navigate('/feed')
+    }
+  }, [navigate, user])
+
+  if (user) return null
 
   return (
     <main className="home-page">
       <div className="home-container">
         <div className="home-content">
           <div className="home-header">
-            <h1 className="home-title">Insta</h1>
-            <p className="home-subtitle">Share your moments with the world</p>
+            <h1 className="home-title">ConnectVerse</h1>
+            <p className="home-subtitle">A cleaner social feed for sharing moments, following friends, and saving what matters.</p>
           </div>
 
           <div className="home-description">

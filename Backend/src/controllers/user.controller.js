@@ -2,6 +2,7 @@ const followModel = require("../models/follow.model")
 const userModel = require("../models/user.model")
 const savedModel = require("../models/saved.model")
 const postModel = require("../models/post.model")
+const likeModel = require("../models/like.model")
 
 /* FOLLOW REQUEST */
 async function followUserController(req, res) {
@@ -228,12 +229,61 @@ async function getSavedPostsController(req, res) {
   try {
     const username = req.user.username
 
-    const saved = await savedModel.find({ user: username }).populate('post').sort({ createdAt: -1 })
+    const saved = await savedModel
+      .find({ user: username })
+      .populate({
+        path: 'post',
+        populate: {
+          path: 'user',
+          select: 'username email bio profileImage'
+        }
+      })
+      .sort({ createdAt: -1 })
+      .lean()
+
+    const hydratedSavedPosts = await Promise.all(
+      saved.map(async (savedItem) => {
+        if (!savedItem.post) {
+          return null
+        }
+
+        const likeCount = await likeModel.countDocuments({ post: savedItem.post._id })
+        const isLiked = await likeModel.exists({
+          user: username,
+          post: savedItem.post._id
+        })
+
+        let followStatus = null
+        if (savedItem.post.user?.username && savedItem.post.user.username !== username) {
+          const followRecord = await followModel.findOne({
+            follower: username,
+            followee: savedItem.post.user.username
+          })
+
+          if (followRecord) {
+            followStatus = followRecord.status
+          }
+        }
+
+        return {
+          ...savedItem,
+          post: {
+            ...savedItem.post,
+            isLiked: !!isLiked,
+            isSaved: true,
+            followStatus,
+            likes: Array.from({ length: likeCount })
+          }
+        }
+      })
+    )
+
+    const filteredSavedPosts = hydratedSavedPosts.filter(Boolean)
 
     return res.json({
       message: "Saved posts fetched successfully",
-      saved,
-      count: saved.length
+      saved: filteredSavedPosts,
+      count: filteredSavedPosts.length
     })
   } catch (err) {
     return res.status(500).json({ message: "Server error" })

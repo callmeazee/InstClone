@@ -1,10 +1,13 @@
 import axios from "axios";
+import { API_BASE_URL } from "./api.config";
 
 
 const api = axios.create({
-    baseURL: 'http://localhost:3000/api/auth',
+    baseURL: `${API_BASE_URL}/auth`,
     withCredentials: true
 })
+
+const getErrorPayload = (err) => err.response?.data || err
 
 export const register = async (username, email, password) => {
     try {
@@ -15,7 +18,7 @@ export const register = async (username, email, password) => {
         })
         return res.data
     } catch (err) {
-        throw err.response.data
+        throw getErrorPayload(err)
     }
 }
 
@@ -27,16 +30,16 @@ export const login = async (username, password) => {
         })
         return res.data
     } catch (err) {
-        throw err.response.data
+        throw getErrorPayload(err)
     }
 }
 
 export const getMe = async () => {
     try {
-        const res = await api.get('/get-me')
+        const res = await api.get('/me')
         return res.data
     } catch (err) {
-        throw err.response.data 
+        throw getErrorPayload(err)
     }
 }
 
@@ -45,6 +48,6 @@ export const logout = async () => {
         const res = await api.post('/logout')
         return res.data
     } catch (err) {
-        throw err.response.data 
+        throw getErrorPayload(err)
     }
 }

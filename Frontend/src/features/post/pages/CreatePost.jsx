@@ -3,6 +3,7 @@ import '../style/createPost.scss'
 import { usePost } from '../hook/usePost'
 import { useAuth } from '../../auth/hooks/useAuth'
 import { useNavigate } from 'react-router-dom'
+import Nav from '../../shared/components/Nav'
 
 const CreatePost = () => {
     const { user, isInitialized } = useAuth()
@@ -77,7 +78,8 @@ const CreatePost = () => {
     }
 
     return (
-        <main className="create-post-page">
+        <main className="create-post-page app-shell-page">
+            <Nav />
             <div className="form-container">
                 <h1>Create Post</h1>
                 <form onSubmit={handleSubmit}>

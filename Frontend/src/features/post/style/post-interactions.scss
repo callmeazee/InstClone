@@ -1,316 +1,221 @@
-/* Post Interactions - Like, Follow, Comment Styling */
-
-/* Gradient Profile Ring Animation */
-@keyframes gradientShift {
-  0% {
-    background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
-  }
-  50% {
-    background: linear-gradient(225deg, var(--color-accent), var(--color-primary));
-  }
-  100% {
-    background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
-  }
-}
-
-/* Heart Beat Animation */
 @keyframes heartBeat {
   0% {
     transform: scale(1);
   }
-  15% {
-    transform: scale(1.3);
-  }
-  30% {
-    transform: scale(1);
+  20% {
+    transform: scale(1.18);
   }
   45% {
-    transform: scale(1.3);
-  }
-  60% {
-    transform: scale(1);
-  }
-}
-
-/* Like Count Pop Animation */
-@keyframes countPop {
-  0% {
-    transform: scale(1);
-    opacity: 1;
-  }
-  50% {
-    transform: scale(1.2);
+    transform: scale(0.96);
   }
   100% {
     transform: scale(1);
-    opacity: 1;
   }
 }
 
-/* Profile Ring with Gradient */
-.post .user .img-wrapper {
+.post {
   position: relative;
-  width: 3rem;
-  height: 3rem;
-  min-width: 3rem;
-  border-radius: 50%;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
-  padding: 2px;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+  border-radius: 1.35rem;
+  background: var(--glass-bg);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-md);
+  backdrop-filter: blur(18px);
   overflow: hidden;
-  box-shadow: 0 0 16px rgba(255, 95, 74, 0.4);
-  transition: var(--transition-base);
 }
 
-.post .user .img-wrapper:hover {
-  box-shadow: 0 0 24px rgba(255, 95, 74, 0.6);
-  transform: scale(1.05);
+
+
+
+
+
+
+
+
+
+.post .post-error {
+  position: absolute;
+  top: 0.85rem;
+  left: 0.85rem;
+  right: 3.5rem;
+  padding: 0.65rem 0.8rem;
+  border-radius: 0.9rem;
+  background: rgba(251, 113, 133, 0.18);
+  border: 1px solid rgba(251, 113, 133, 0.35);
+  color: #ffe3ea;
+  font-size: 0.82rem;
+  font-weight: 600;
+  z-index: 2;
 }
 
-.post .user .img-wrapper img {
-  width: calc(100% - 4px);
-  height: calc(100% - 4px);
+// .post .post-delete-btn {
+//   position: absolute;
+//   top: 0.85rem;
+//   right: 0.85rem;
+//   width: 2.25rem;
+//   height: 2.25rem;
+//   display: inline-flex;
+//   align-items: center;
+//   justify-content: center;
+//   border-radius: 50%;
+//   border: 1px solid rgba(251, 113, 133, 0.28);
+//   background: rgba(11, 18, 32, 0.76);
+//   color: #ffd3dc;
+//   z-index: 3;
+
+//   svg {
+//     width: 1rem;
+//     height: 1rem;
+//   }
+
+//   &:hover:not(:disabled) {
+//     background: rgba(251, 113, 133, 0.16);
+//     color: #fff1f4;
+//   }
+// }
+
+
+.post .post-delete-btn {
+  position: absolute;
+  /* Instead of 40rem, we align it to the top-right corner of the CARD */
+  top: 1.25rem;  
+  right: 1.25rem;
+  
+  width: 2.25rem;
+  height: 2.25rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 50%;
-  object-fit: cover;
+  border: 1px solid rgba(251, 113, 133, 0.28);
+  background: rgba(11, 18, 32, 0.76);
+  color: #ffd3dc;
+  z-index: 10; // Higher z-index to stay on top
+
+  svg {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  &:hover:not(:disabled) {
+    background: rgba(251, 113, 133, 0.16);
+    color: #fff1f4;
+  }
 }
 
-/* User Info Container */
+
+
+
+
+
+
+.post .post-delete-btn__loader {
+  width: 0.9rem;
+  height: 0.9rem;
+  border: 2px solid rgba(255, 255, 255, 0.22);
+  border-top-color: currentColor;
+  border-radius: 50%;
+  animation: spin 0.75s linear infinite;
+}
+
+// .post .post-header {
+//   display: flex;
+//   align-items: center;
+//   justify-content: space-between;
+//   gap: 0.85rem;
+// }
+.post .post-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.85rem;
+  /* CRITICAL: This 3.5rem creates space so the badge/name 
+     never touch the delete button */
+  padding-right: 3.5rem; 
+  position: relative;
+}
+
+
+
+
+
+
 .post .user-info {
   display: flex;
   align-items: center;
-  gap: var(--spacing-md);
+  gap: 0.85rem;
+  min-width: 0;
   flex: 1;
 }
 
-.post .user-info p {
-  margin: 0;
-  font-weight: 600;
-  color: var(--color-text-primary);
-  transition: var(--transition-base);
+.post .img-wrapper {
+  width: 3rem;
+  height: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, var(--color-primary), var(--color-primary-light));
+  box-shadow: 0 10px 24px rgba(255, 122, 89, 0.2);
+  flex-shrink: 0;
+
+  img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+  }
 }
 
-.post .user-info p:hover {
-  color: var(--color-primary);
+.post .user-copy {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
 }
 
-/* Follow Button */
-.post .follow-btn {
-  padding: 0.6rem 1.2rem;
-  border-radius: var(--radius-full);
-  border: 2px solid transparent;
-  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
-  color: white;
-  font-size: var(--font-sm);
+.post .post-username {
+  font-size: 0.98rem;
   font-weight: 700;
-  cursor: pointer;
-  transition: all 0.3s ease;
+  overflow: hidden;
+  text-overflow: ellipsis;
   white-space: nowrap;
-  letter-spacing: 0.02em;
-  box-shadow: 0 4px 12px rgba(255, 95, 74, 0.2);
 }
 
-.post .follow-btn:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(255, 95, 74, 0.3);
+.post .post-meta {
+  color: var(--color-text-secondary);
+  font-size: 0.78rem;
 }
 
-.post .follow-btn:active:not(:disabled) {
-  transform: translateY(0);
-}
-
-.post .follow-btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  transform: none;
-}
-
-/* Following Button Variant */
-.post .follow-btn.following {
-  background: transparent;
-  border: 2px solid var(--color-text-primary);
-  color: var(--color-text-primary);
-  box-shadow: none;
-}
-
-.post .follow-btn.following:hover:not(:disabled) {
-  border-color: var(--color-primary);
-  background: rgba(255, 95, 74, 0.1);
-  box-shadow: 0 4px 12px rgba(255, 95, 74, 0.2);
-  transform: translateY(-2px);
-}
-
-/* Pending Follow Button Variant */
-.post .follow-btn.pending {
-  background: linear-gradient(135deg, #ffa500, #ff8c00);
-  border: 2px solid #ff8c00;
-  color: white;
-  box-shadow: 0 4px 15px rgba(255, 165, 0, 0.3);
-  pointer-events: none;
-  animation: pendingPulse 2s ease-in-out infinite;
-}
-
-.post .follow-btn.pending:hover,
-.post .follow-btn.pending:active {
-  transform: none;
-}
-
-@keyframes pendingPulse {
-  0%, 100% {
-    box-shadow: 0 4px 15px rgba(255, 165, 0, 0.3);
-  }
-  50% {
-    box-shadow: 0 4px 25px rgba(255, 165, 0, 0.5);
-  }
-}
-
-/* Like Button Container */
-.post .icons {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-top: var(--spacing-sm);
-  gap: var(--spacing-md);
-}
-
-.post .icons .left {
-  display: flex;
-  gap: var(--spacing-lg);
-  align-items: center;
-}
-
-/* Like Action Group */
-.post .like-action {
+.post .post-header-actions {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  flex-shrink: 0;
 }
 
-.post .like-action button {
-  background-color: transparent;
-  border: none;
-  padding: 0.25rem;
-  cursor: pointer;
-  transition: var(--transition-base);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.post .like-action button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-/* Icon Styling */
-.post svg {
-  width: 1.5rem;
-  height: 1.5rem;
-  fill: var(--color-text-secondary);
-  cursor: pointer;
-  transition: var(--transition-fast);
-}
-
-.post svg:hover:not(.like-animate) {
-  fill: var(--color-text-primary);
-  transform: scale(1.15);
-}
-
-/* Like Icon active state */
-.post svg.like {
-  fill: var(--color-like);
-  color: var(--color-like);
-}
-
-/* Like Animation */
-.post svg.like-animate {
-  animation: heartBeat 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-  fill: var(--color-like);
-  color: var(--color-like);
-}
-
-/* Like Count Display */
-.post .like-count {
-  font-size: var(--font-sm);
-  color: var(--color-text-secondary);
+.post .follow-btn,
+.post .owner-badge {
+  min-height: 2.4rem;
+  padding: 0.55rem 0.9rem;
+  border-radius: var(--radius-full);
+  font-size: 0.82rem;
   font-weight: 700;
-  min-width: 2rem;
-  text-align: center;
-  letter-spacing: 0.05em;
-  transition: var(--transition-fast);
+  white-space: nowrap;
 }
 
-.post .like-count.updating {
-  animation: countPop 0.3s ease-out;
-  color: var(--color-primary);
-  font-weight: 800;
-}
+.post .follow-btn {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+  color: #fff;
+  border: 1px solid transparent;
+  box-shadow: 0 14px 24px rgba(255, 122, 89, 0.18);
 
-/* Icon Button Group */
-.post .icons .left button,
-.post .icons .right button {
-  background-color: transparent;
-  border: none;
-  padding: 0.25rem;
-  cursor: pointer;
-  transition: var(--transition-base);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.post .icons button:hover svg {
-  fill: var(--color-text-primary);
-  transform: scale(1.15);
-}
-
-.post .icons button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-/* Caption Styling */
-.post .caption {
-  margin: 0;
-  color: var(--color-text-secondary);
-  font-size: var(--font-sm);
-  line-height: var(--line-height-relaxed);
-  word-wrap: break-word;
-  transition: var(--transition-base);
-}
-
-.post .caption:hover {
-  color: var(--color-text-primary);
-}
-
-/* Bottom Section */
-.post .bottom {
-  padding-top: var(--spacing-md);
-  border-top: 1px solid var(--color-border);
-}
-
-/* Save Button */
-.post .save-btn {
-  background-color: transparent;
-  border: none;
-  padding: 0.25rem;
-  cursor: pointer;
-  transition: var(--transition-base);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  svg {
-    width: 1.5rem;
-    height: 1.5rem;
-    fill: var(--color-text-secondary);
-    transition: var(--transition-fast);
-  }
-
-  &:hover:not(:disabled) svg {
-    fill: var(--color-text-primary);
-    transform: scale(1.15);
+  &:hover:not(:disabled) {
+    transform: translateY(-1px);
   }
 
   &:disabled {
@@ -318,105 +223,186 @@
     cursor: not-allowed;
   }
 
-  &.saved svg {
-    fill: var(--color-primary);
-    animation: bookmarkSave 0.3s ease;
+  &.following {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: var(--color-border);
+    color: var(--color-text-primary);
+    box-shadow: none;
+  }
+
+  &.pending {
+    background: rgba(248, 201, 91, 0.16);
+    border-color: rgba(248, 201, 91, 0.24);
+    color: #ffe7a0;
+    box-shadow: none;
   }
 }
 
-@keyframes bookmarkSave {
-  0% {
-    transform: scale(0.8);
-  }
-  50% {
-    transform: scale(1.15);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-
-/* Delete Button - Positioned in top right corner */
-.post {
-  position: relative;
-}
-
-.post-delete-btn {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: linear-gradient(135deg, #ff6b6b, #ee5a6f);
-  border: none;
-  border-radius: 50%;
-  width: 36px;
-  height: 36px;
-  padding: 0;
-  display: flex;
+.post .owner-badge {
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 18px;
-  cursor: pointer;
-  opacity: 0.8;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
-  z-index: 10;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-secondary);
+}
+
+.post .post-media {
+  width: 100%;
+  border-radius: 1.1rem;
+  overflow: hidden;
+  background: var(--color-surface);
+
+  img {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+  }
+}
+
+.post .icons {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.post .left,
+.post .right {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.post .like-action {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.2rem 0.2rem 0.2rem 0.45rem;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--color-border-light);
+}
+
+.post .like-action button,
+.post .post-icon-btn,
+.post .save-btn {
+  width: 2.35rem;
+  height: 2.35rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--color-border-light);
+  color: var(--color-text-secondary);
 
   &:hover:not(:disabled) {
-    opacity: 1;
-    transform: scale(1.1);
-    box-shadow: 0 6px 16px rgba(255, 107, 107, 0.5);
-  }
-
-  &:active:not(:disabled) {
-    transform: scale(0.95);
+    color: var(--color-text-primary);
+    border-color: rgba(255, 122, 89, 0.2);
+    background: rgba(255, 122, 89, 0.08);
   }
 
   &:disabled {
-    opacity: 0.5;
+    opacity: 0.55;
     cursor: not-allowed;
   }
 }
 
-/* Responsive Adjustments */
-@media (max-width: 520px) {
-  .post .user {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .post .follow-btn {
-    width: 100%;
-    text-align: center;
-    padding: 0.6rem 1rem;
-  }
-
-  .post .icons .left {
-    gap: var(--spacing-md);
-  }
-
-  .post svg {
-    width: 1.25rem;
-    height: 1.25rem;
-  }
-
-  .post .like-count {
-    font-size: var(--font-xs);
-    min-width: 1.5rem;
-  }
+.post svg {
+  width: 1.15rem;
+  height: 1.15rem;
+  transition: var(--transition-fast);
 }
 
-@media (max-width: 420px) {
-  .post .user-info p {
-    font-size: var(--font-sm);
+.post svg.like {
+  color: var(--color-like);
+  fill: var(--color-like);
+}
+
+.post svg.like-animate {
+  animation: heartBeat 0.4s ease;
+}
+
+.post .like-count {
+  min-width: 1.8rem;
+  padding-right: 0.35rem;
+  font-size: 0.83rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  text-align: center;
+}
+
+.post .save-btn.saved {
+  color: var(--color-primary);
+  border-color: rgba(255, 122, 89, 0.2);
+  background: rgba(255, 122, 89, 0.08);
+}
+
+.post .bottom {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.post .caption {
+  color: var(--color-text-secondary);
+  font-size: 0.93rem;
+  line-height: 1.6;
+  word-break: break-word;
+}
+
+// @media (max-width: 767px) {
+//   .post {
+//     padding: 0.9rem;
+//     border-radius: 1.15rem;
+//   }
+
+//   .post .post-header {
+//     align-items: flex-start;
+//   }
+
+//   .post .post-header-actions {
+//     align-self: center;
+//   }
+
+//   .post .icons {
+//     flex-wrap: wrap;
+//   }
+
+//   .post .left {
+//     flex-wrap: wrap;
+//   }
+// }
+
+
+
+@media (max-width: 767px) {
+  .post {
+    padding: 1rem;
   }
 
-  .post .follow-btn {
-    padding: 0.5rem 0.75rem;
-    font-size: var(--font-xs);
+  .post .post-header {
+    /* Keep the header items from hitting the button on small screens */
+    padding-right: 3rem; 
+  }
+    .post .post-header-actions {
+    align-self: center;
   }
 
-  .post svg {
-    width: 1.125rem;
-    height: 1.125rem;
+  .post .icons {
+    flex-wrap: wrap;
+  }
+
+  .post .left {
+    flex-wrap: wrap;
+  }
+
+  .post .post-delete-btn {
+    /* Adjust position slightly for smaller padding */
+    top: 1.45rem;
+    right: 0.9rem;
+    width: 2.1rem;
+    height: 2.1rem;
   }
 }

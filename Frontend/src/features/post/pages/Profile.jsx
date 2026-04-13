@@ -13,14 +13,12 @@ const Profile = () => {
   const { user, isInitialized } = useAuth()
   const navigate = useNavigate()
   const { feed, handleGetFeed, loading, error } = usePost()
-  const [userPosts, setUserPosts] = useState([])
   const [savedPosts, setSavedPosts] = useState([])
   const [activeTab, setActiveTab] = useState('posts')
   const [savedLoading, setSavedLoading] = useState(false)
   const [savedError, setSavedError] = useState(null)
-  const [searchParams] = useSearchParams()
+  const [searchParams, setSearchParams] = useSearchParams()
   const [userStats, setUserStats] = useState({ followers: 0, following: 0, posts: 0 })
-  const [statsRefreshKey, setStatsRefreshKey] = useState(0)
 
   // Redirect to login if not authenticated (but wait for auth initialization)
   useEffect(() => {
@@ -39,18 +37,10 @@ const Profile = () => {
   }, [])
 
   useEffect(() => {
-    if (feed && user) {
-      // Filter posts by current user
-      const posts = feed.filter(post => post.user?.username === user.username)
-      setUserPosts(posts)
-    }
-  }, [feed, user])
-
-  useEffect(() => {
     if (user) {
       fetchUserStats()
     }
-  }, [user, statsRefreshKey])
+  }, [user])
 
   // Fetch saved posts when tab is switched
   useEffect(() => {
@@ -86,25 +76,44 @@ const Profile = () => {
     }
   }
 
-  // Function to refresh stats (called after follow/unfollow actions)
-  const refreshStats = () => {
-    setStatsRefreshKey(prev => prev + 1)
+  const avatar = user?.profileImage || getConsistentAvatar(user?.username || 'user')
+  const userPosts = user ? feed.filter((post) => post.user?.username === user.username) : []
+  const normalizedSavedPosts = savedPosts
+    .map((savedItem) => {
+      if (!savedItem?.post) {
+        return null
+      }
+
+      return {
+        ...savedItem.post,
+        user: typeof savedItem.post.user === 'string' ? { username: savedItem.post.user } : savedItem.post.user,
+        isSaved: true
+      }
+    })
+    .filter(Boolean)
+
+  const handleTabChange = (tab) => {
+    setActiveTab(tab)
+    setSearchParams(tab === 'saved' ? { tab: 'saved' } : {})
   }
 
-  const avatar = user?.profileImage || getConsistentAvatar(user?.username || 'user')
-
   return (
-    <main className='profile-page'>
+    <main className='profile-page app-shell-page'>
       <Nav />
       <div className="profile">
-        {/* Profile Header */}
         <div className="profile-header">
           <div className="profile-info">
             <div className="profile-avatar">
               <img src={avatar} alt="profile" />
             </div>
             <div className="profile-details">
-              <h1>{user?.username}</h1>
+              <div className="profile-identity">
+                <div>
+                  <span className="profile-kicker">Personal Space</span>
+                  <h1>{user?.username}</h1>
+                </div>
+                <span className="profile-chip">{activeTab === 'saved' ? 'Saved view' : 'Posts view'}</span>
+              </div>
               <p className="profile-email">{user?.email}</p>
               <div className="profile-stats">
                 <div className="stat">
@@ -124,23 +133,21 @@ const Profile = () => {
           </div>
         </div>
 
-        {/* Tabs */}
         <div className="profile-tabs">
           <button 
             className={`tab ${activeTab === 'posts' ? 'active' : ''}`}
-            onClick={() => setActiveTab('posts')}
+            onClick={() => handleTabChange('posts')}
           >
             <span role="img" aria-label="posts">📷</span> Posts
           </button>
           <button 
             className={`tab ${activeTab === 'saved' ? 'active' : ''}`}
-            onClick={() => setActiveTab('saved')}
+            onClick={() => handleTabChange('saved')}
           >
             <span role="img" aria-label="saved">🔖</span> Saved
           </button>
         </div>
 
-        {/* Posts Section */}
         {activeTab === 'posts' && (
           <div className="posts-section">
             <header className="section-header">
@@ -159,10 +166,16 @@ const Profile = () => {
                 <p>{error}</p>
               </div>
             ) : (
-              <div className="posts">
+              <div className="profile-post-grid">
                 {userPosts?.length > 0 ? (
                   userPosts.map((post) => (
-                    <Post key={post._id} user={post.user} post={post} />
+                    <article key={post._id} className="profile-post-card">
+                      <img src={post.imgUrl} alt={post.caption || `${user?.username} post`} />
+                      <div className="profile-post-card__overlay">
+                        <span>{post.likes?.length || 0} likes</span>
+                        <p>{post.caption || 'Untitled post'}</p>
+                      </div>
+                    </article>
                   ))
                 ) : (
                   <div className="message-state empty-state">
@@ -180,7 +193,7 @@ const Profile = () => {
           <div className="saved-section">
             <header className="section-header">
               <h2>Saved Posts</h2>
-              <p>{savedPosts.length} saved</p>
+              <p>{normalizedSavedPosts.length} saved</p>
             </header>
 
             {savedLoading ? (
@@ -194,13 +207,13 @@ const Profile = () => {
                 <p>{savedError}</p>
               </div>
             ) : (
-              <div className="posts">
-                {savedPosts?.length > 0 ? (
-                  savedPosts.map((savedItem) => (
+              <div className="saved-posts-list">
+                {normalizedSavedPosts.length > 0 ? (
+                  normalizedSavedPosts.map((savedPost) => (
                     <Post 
-                      key={savedItem._id} 
-                      user={savedItem.post?.user} 
-                      post={savedItem.post}
+                      key={savedPost._id}
+                      user={savedPost.user}
+                      post={savedPost}
                       onSaveToggle={fetchSavedPosts}
                     />
                   ))

@@ -4,6 +4,20 @@ const jwt = require('jsonwebtoken')
 const userModel = require('../models/user.model')
 const bcrypt = require('bcrypt')
 
+function getCookieOptions() {
+    const isProduction = process.env.NODE_ENV === 'production'
+    const secure = process.env.COOKIE_SECURE === 'true' || isProduction
+    const sameSite = process.env.COOKIE_SAME_SITE || (secure ? 'none' : 'lax')
+
+    return {
+        httpOnly: true,
+        secure,
+        sameSite,
+        maxAge: 24 * 60 * 60 * 1000,
+        path: '/'
+    }
+}
+
 async  function registerController (req,res){
     const{email, username, password, bio, profileImage} = req.body
 
@@ -35,7 +49,7 @@ async  function registerController (req,res){
     username: user.username
    }, process.env.JWT_SECRET_KEY, {expiresIn: '1d'})
 
-   res.cookie('token', token)
+   res.cookie('token', token, getCookieOptions())
 
    res.status(201).json({
     message: "user register succesfully",
@@ -99,15 +113,7 @@ async function loginController (req,res) {
       process.env.JWT_SECRET_KEY,
       {expiresIn: "1d"}
     )
-    // res.cookie("token", token)
-
-    res.cookie("token", token, {
-    httpOnly: true,     // Prevents JavaScript from stealing the token
-    secure: false,      // Set to false for localhost (HTTP)
-    sameSite: 'lax',    // Allows the cookie to be sent on cross-origin requests from the same site
-    maxAge: 24 * 60 * 60 * 1000 ,// 1 day
-    path: '/'
-});
+    res.cookie("token", token, getCookieOptions());
    
 
     res.status(200).json({
@@ -122,7 +128,8 @@ async function loginController (req,res) {
 }
 
 async function logoutController(req,res){
-    res.clearCookie('token')
+    const { maxAge, ...clearCookieOptions } = getCookieOptions()
+    res.clearCookie('token', clearCookieOptions)
     res.json({
         message: "Logged out successfully"
     })
@@ -149,4 +156,3 @@ async function getMeController(req,res){
 }
 
 module.exports = {registerController, loginController, getMeController, logoutController}
-

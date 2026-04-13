@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import '../style/feed.scss'
-import '../style/post-interactions.scss'
 import Post from '../components/Post'
 import { usePost } from '../hook/usePost'
 import { useAuth } from '../../auth/hooks/useAuth'
@@ -50,7 +49,7 @@ const Feed = () => {
   // Show loading spinner while auth is initializing
   if (!isInitialized) {
     return (
-      <main className='feed-page'>
+      <main className='feed-page app-shell-page'>
         <Nav />
         <div className="feed">
           <div className="message-state">
@@ -64,11 +63,12 @@ const Feed = () => {
   }
 
   return (
-    <main className='feed-page'>
+    <main className='feed-page app-shell-page'>
       <Nav />
       <div className="feed">
         <header className="feed-header">
-          <div>
+          <div className="feed-copy">
+            <span className="feed-eyebrow">Community</span>
             <h1>Your Feed</h1>
             <p>Browse posts from your community.</p>
           </div>
@@ -85,7 +85,7 @@ const Feed = () => {
             >
               👤 My Posts
             </button>
-            <span className="post-count">{filteredPosts?.length ?? 0}</span>
+            <span className="post-count">{filteredPosts?.length ?? 0} posts</span>
           </div>
         </header>
 
