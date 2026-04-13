@@ -1,6 +1,8 @@
 require('dotenv').config()
 
 const express = require('express')
+const fs = require('fs')
+const path = require('path')
 const connectToDb = require('./config/database')
 const cookieParser = require('cookie-parser')
 const cors = require('cors')
@@ -19,6 +21,7 @@ const commentRouter = require('./routes/comment.routes')
 
 
 const app = express()
+app.set('trust proxy', 1)
 connectToDb()
 app.use(express.json())
 app.use(cookieParser())
@@ -45,15 +48,17 @@ const configuredOrigins = (process.env.CLIENT_ORIGINS || '')
     })
 
 const allowedOrigins = [...new Set([...defaultOrigins, ...configuredOrigins])]
-app.use(cors({
-    origin: (origin, callback) => {
-        if (!origin || allowedOrigins.includes(origin)) {
-            callback(null, true)
-        } else {
-            callback(new Error('Not allowed by CORS'))
-        }
-    },
-    credentials: true
+const frontendDistPath = path.resolve(__dirname, '../../Frontend/dist')
+const hasFrontendBuild = fs.existsSync(frontendDistPath)
+app.use(cors((req, callback) => {
+    const requestOrigin = req.header('Origin')
+    const sameOrigin = `${req.protocol}://${req.get('host')}`
+    const isAllowedOrigin = !requestOrigin || allowedOrigins.includes(requestOrigin) || requestOrigin === sameOrigin
+
+    callback(null, {
+        origin: isAllowedOrigin,
+        credentials: true
+    })
 }))
 
 
@@ -63,9 +68,21 @@ app.use('/api/posts', postRouter)
 app.use('/api/users', userRouter)
 app.use('/api/comments', commentRouter)
 
-app.get('/', (req, res) => {
-    res.send('API is running...')
+app.get('/health', (req, res) => {
+    res.status(200).json({status: 'ok'})
 })
+
+if (hasFrontendBuild) {
+    app.use(express.static(frontendDistPath))
+
+    app.get(/^(?!\/api|\/health).*/, (req, res) => {
+        res.sendFile(path.join(frontendDistPath, 'index.html'))
+    })
+} else {
+    app.get('/', (req, res) => {
+        res.send('API is running...')
+    })
+}
 
 // [
 //     {

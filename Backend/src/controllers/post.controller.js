@@ -1,6 +1,5 @@
 const postModel = require('../models/post.model')
 const Imagekit = require("@imagekit/nodejs")
-const jwt = require('jsonwebtoken')
 const likeModel = require('../models/like.model')
 
 
@@ -13,26 +12,41 @@ const imagekit = new Imagekit({
 
 
 async function createPostController(req,res){
-    
-        
-    // console.log(decoded)
+    if(!req.file){
+        return res.status(400).json({
+            message: "Image file is required"
+        })
+    }
 
-    const file = await imagekit.files.upload({
-        file: await Imagekit.toFile(Buffer.from(req.file.buffer), 'file'),
-        fileName: "Test",
-        folder: "cohort2-insta-clone-posts"
+    if(!process.env.IMAGEKIT_PRIVATE_KEY){
+        return res.status(500).json({
+            message: "Image upload service is not configured"
+        })
+    }
 
-    })
+    try{
+        const file = await imagekit.files.upload({
+            file: await Imagekit.toFile(Buffer.from(req.file.buffer), req.file.originalname || 'upload'),
+            fileName: req.file.originalname || `post-${Date.now()}`,
+            folder: "cohort2-insta-clone-posts"
+        })
 
-    const post = await postModel.create({
-        caption: req.body.caption,
-        imgUrl: file.url,
-        user: req.user.id
-    })
-    res.status(201).json({
-        message: "Post created Successfully",
-        post
-    })
+        const post = await postModel.create({
+            caption: req.body.caption?.trim() || "",
+            imgUrl: file.url,
+            user: req.user.id
+        })
+
+        res.status(201).json({
+            message: "Post created Successfully",
+            post
+        })
+    }catch(error){
+        console.error("Create post error:", error)
+        res.status(500).json({
+            message: "Failed to create post"
+        })
+    }
 }
 
 async function getPostController(req, res) {

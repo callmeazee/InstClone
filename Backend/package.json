@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "npx nodemon server.js",
-    "start": "node server.js"
+    "start": "node server.js",
+    "postinstall": "sh -c 'if [ \"$RENDER\" = \"true\" ] || [ \"$NODE_ENV\" = \"production\" ]; then cd ../Frontend && npm ci --include=dev && npm run build; fi'"
   },
   "keywords": [],
   "author": "",

@@ -37,7 +37,7 @@ Private route, only authenticated user can get their post details
 */
 postRouter.get('/details/:postId', identifyUser, postController.getPostDetailsController)
 
-postRouter.post('/', upload.single("image"),identifyUser, postController.createPostController)
+postRouter.post('/', identifyUser, upload.single("image"), postController.createPostController)
 
 /* 
 GET /api/posts/ [protected] 

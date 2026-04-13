@@ -29,12 +29,14 @@ const CreatePost = () => {
         // Validate file type
         if (!file.type.startsWith('image/')) {
             setError('Please select an image file')
+            e.target.value = ''
             return
         }
 
         // Validate file size (max 5MB)
         if (file.size > 5 * 1024 * 1024) {
             setError('File size must be less than 5MB')
+            e.target.value = ''
             return
         }
 
@@ -70,6 +72,9 @@ const CreatePost = () => {
             setCaption('')
             setSelectedFile(null)
             setPreview(null)
+            if (postImageInputFieldRef.current) {
+                postImageInputFieldRef.current.value = ''
+            }
             navigate('/feed')
         } catch (err) {
             // Error is handled by hook but we can show it too
@@ -93,20 +98,17 @@ const CreatePost = () => {
                                 <img src={preview} alt="Preview" />
                             </div>
                         )}
-                        <label 
+                        <button
+                            type="button"
                             className="file-label"
-                            onClick={() => postImageInputFieldRef.current?.click()}
-                            onKeyDown={(e) => {
-                                if (e.key === 'Enter' || e.key === ' ') {
-                                    e.preventDefault()
-                                    postImageInputFieldRef.current?.click()
+                            onClick={() => {
+                                if (postImageInputFieldRef.current) {
+                                    postImageInputFieldRef.current.click()
                                 }
                             }}
-                            role="button"
-                            tabIndex={0}
                         >
                             {selectedFile ? '✓ Image Selected' : 'Select Image'}
-                        </label>
+                        </button>
                         <input 
                             ref={postImageInputFieldRef}
                             hidden 

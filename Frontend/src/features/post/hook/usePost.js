@@ -32,9 +32,14 @@ export const usePost = () => {
     setError(null);
 
     try {
-      const newPost = await createPost(imageFile, caption);
-      setFeed((prevFeed) => [newPost, ...prevFeed]);
-      return newPost;
+      const response = await createPost(imageFile, caption);
+      const createdPost = response?.post;
+
+      if (createdPost) {
+        setFeed((prevFeed) => [createdPost, ...prevFeed]);
+      }
+
+      return response;
     } catch (error) {
       console.error("Hook error:", error);
       setError(error.response?.data?.message || error.message || "Unable to create post");

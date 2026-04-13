@@ -4,10 +4,14 @@ const jwt = require('jsonwebtoken')
 const userModel = require('../models/user.model')
 const bcrypt = require('bcrypt')
 
-function getCookieOptions() {
-    // If we're using a remote deployed client, we MUST use secure and SameSite=None
-    const isDeployed = !!process.env.CLIENT_ORIGINS || process.env.NODE_ENV === 'production'
-    const secure = process.env.COOKIE_SECURE === 'true' || isDeployed
+function isLocalOrigin(origin = '') {
+    return /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?/i.test(origin)
+}
+
+function getCookieOptions(req) {
+    const explicitSecure = process.env.COOKIE_SECURE === 'true'
+    const origin = req.get('origin') || req.get('referer') || ''
+    const secure = explicitSecure || (process.env.NODE_ENV === 'production' && !isLocalOrigin(origin))
     const sameSite = process.env.COOKIE_SAME_SITE || (secure ? 'none' : 'lax')
 
     return {
@@ -50,7 +54,7 @@ async  function registerController (req,res){
     username: user.username
    }, process.env.JWT_SECRET_KEY, {expiresIn: '1d'})
 
-   res.cookie('token', token, getCookieOptions())
+   res.cookie('token', token, getCookieOptions(req))
 
    res.status(201).json({
     message: "user register succesfully",
@@ -114,7 +118,7 @@ async function loginController (req,res) {
       process.env.JWT_SECRET_KEY,
       {expiresIn: "1d"}
     )
-    res.cookie("token", token, getCookieOptions());
+    res.cookie("token", token, getCookieOptions(req));
    
 
     res.status(200).json({
@@ -129,7 +133,7 @@ async function loginController (req,res) {
 }
 
 async function logoutController(req,res){
-    const { maxAge, ...clearCookieOptions } = getCookieOptions()
+    const { maxAge, ...clearCookieOptions } = getCookieOptions(req)
     res.clearCookie('token', clearCookieOptions)
     res.json({
         message: "Logged out successfully"
