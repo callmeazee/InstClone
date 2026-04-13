@@ -94,8 +94,16 @@ const CreatePost = () => {
                             </div>
                         )}
                         <label 
-                            htmlFor="postImage" 
                             className="file-label"
+                            onClick={() => postImageInputFieldRef.current?.click()}
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter' || e.key === ' ') {
+                                    e.preventDefault()
+                                    postImageInputFieldRef.current?.click()
+                                }
+                            }}
+                            role="button"
+                            tabIndex={0}
                         >
                             {selectedFile ? '✓ Image Selected' : 'Select Image'}
                         </label>

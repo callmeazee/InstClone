@@ -36,6 +36,13 @@ const configuredOrigins = (process.env.CLIENT_ORIGINS || '')
     .split(',')
     .map((origin) => origin.trim())
     .filter(Boolean)
+    .flatMap((origin) => {
+        if (/^https?:\/\//i.test(origin)) {
+            return [origin]
+        }
+
+        return [`https://${origin}`, `http://${origin}`]
+    })
 
 const allowedOrigins = [...new Set([...defaultOrigins, ...configuredOrigins])]
 app.use(cors({
