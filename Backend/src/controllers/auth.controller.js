@@ -5,8 +5,9 @@ const userModel = require('../models/user.model')
 const bcrypt = require('bcrypt')
 
 function getCookieOptions() {
-    const isProduction = process.env.NODE_ENV === 'production'
-    const secure = process.env.COOKIE_SECURE === 'true' || isProduction
+    // If we're using a remote deployed client, we MUST use secure and SameSite=None
+    const isDeployed = !!process.env.CLIENT_ORIGINS || process.env.NODE_ENV === 'production'
+    const secure = process.env.COOKIE_SECURE === 'true' || isDeployed
     const sameSite = process.env.COOKIE_SAME_SITE || (secure ? 'none' : 'lax')
 
     return {
@@ -29,7 +30,7 @@ async  function registerController (req,res){
    })
    if(isUserExist){
     return res.status(409).json({
-        message: "User already exist" + (isUserExist).email === email ? "email already exist": 'username already exist'
+        message: isUserExist.email === email ? "Email already exists" : "Username already exists"
     })
    }
    
