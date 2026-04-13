@@ -9,22 +9,24 @@ import Nav from '../../shared/components/Nav'
 
 const Feed = () => {
   const { feed, handleGetFeed, loading, error } = usePost()
-  const { user } = useAuth()
+  const { user, isInitialized } = useAuth()
   const navigate = useNavigate()
   const [feedType, setFeedType] = useState('all') // 'all' or 'my'
   const [filteredPosts, setFilteredPosts] = useState([])
   const [refreshKey, setRefreshKey] = useState(0)
 
-  // Redirect to login if not authenticated
+  // Redirect to login if not authenticated (but wait for auth initialization)
   useEffect(() => {
-    if (!user) {
+    if (isInitialized && !user) {
       navigate('/login')
     }
-  }, [user, navigate])
+  }, [user, isInitialized, navigate])
 
   useEffect(() => {
-    handleGetFeed()
-  }, [refreshKey])
+    if (user) {
+      handleGetFeed()
+    }
+  }, [refreshKey, user])
 
   useEffect(() => {
     if (feedType === 'all') {
@@ -38,6 +40,27 @@ const Feed = () => {
   // Function to refresh feed (called after follow/unfollow actions)
   const refreshFeed = () => {
     setRefreshKey(prev => prev + 1)
+  }
+
+  // Function to handle post deletion
+  const handlePostDeleted = (postId) => {
+    setFilteredPosts(prev => prev.filter(p => p._id !== postId))
+  }
+
+  // Show loading spinner while auth is initializing
+  if (!isInitialized) {
+    return (
+      <main className='feed-page'>
+        <Nav />
+        <div className="feed">
+          <div className="message-state">
+            <div className="spinner"></div>
+            <h2>Initializing...</h2>
+            <p>Please wait while we verify your login.</p>
+          </div>
+        </div>
+      </main>
+    )
   }
 
   return (
@@ -80,7 +103,13 @@ const Feed = () => {
           <div className="posts">
             {filteredPosts?.length > 0 ? (
               filteredPosts.map((post) => (
-                <Post key={post._id} user={post.user} post={post} onFollowStatusChange={refreshFeed} />
+                <Post 
+                  key={post._id} 
+                  user={post.user} 
+                  post={post} 
+                  onFollowStatusChange={refreshFeed}
+                  onPostDeleted={handlePostDeleted}
+                />
               ))
             ) : (
               <div className="message-state empty-state">

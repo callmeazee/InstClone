@@ -124,10 +124,10 @@ async function getFollowStatusController(req, res) {
   const follow = await followModel.findOne({ follower, followee })
 
   if (!follow) {
-    return res.json({ status: "none" })
+    return res.json({ followStatus: null })
   }
 
-  return res.json({ status: follow.status })
+  return res.json({ followStatus: follow.status })
 }
 
 /* GET PENDING REQUESTS */
@@ -159,8 +159,8 @@ async function getPendingRequestsController(req, res) {
     )
 
     return res.json({ 
-      message: "Pending requests fetched successfully",
-      requests: requestsWithUserDetails 
+      requests: requestsWithUserDetails,
+      message: "Pending requests fetched successfully"
     })
   } catch (err) {
     console.error("Get pending requests error:", err)
@@ -244,6 +244,12 @@ async function getSavedPostsController(req, res) {
 async function getUserStatsController(req, res) {
   try {
     const username = req.params.username || req.user.username
+    
+    // Get user ObjectId by username
+    const targetUser = await userModel.findOne({ username })
+    if (!targetUser) {
+      return res.status(404).json({ message: "User not found" })
+    }
 
     // Count followers (people following this user)
     const followersCount = await followModel.countDocuments({
@@ -257,9 +263,9 @@ async function getUserStatsController(req, res) {
       status: "accepted"
     })
 
-    // Count posts
+    // Count posts by user ObjectId (not username)
     const postsCount = await postModel.countDocuments({
-      user: username
+      user: targetUser._id
     })
 
     return res.json({

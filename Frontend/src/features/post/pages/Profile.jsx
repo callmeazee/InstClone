@@ -10,7 +10,7 @@ import { useSearchParams, useNavigate } from 'react-router-dom'
 import '../style/profile.scss'
 
 const Profile = () => {
-  const { user } = useAuth()
+  const { user, isInitialized } = useAuth()
   const navigate = useNavigate()
   const { feed, handleGetFeed, loading, error } = usePost()
   const [userPosts, setUserPosts] = useState([])
@@ -22,12 +22,12 @@ const Profile = () => {
   const [userStats, setUserStats] = useState({ followers: 0, following: 0, posts: 0 })
   const [statsRefreshKey, setStatsRefreshKey] = useState(0)
 
-  // Redirect to login if not authenticated
+  // Redirect to login if not authenticated (but wait for auth initialization)
   useEffect(() => {
-    if (!user) {
+    if (isInitialized && !user) {
       navigate('/login')
     }
-  }, [user, navigate])
+  }, [user, isInitialized, navigate])
 
   useEffect(() => {
     const tab = searchParams.get('tab') || 'posts'

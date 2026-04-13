@@ -1,14 +1,17 @@
-import React, { useState } from 'react'
-import { likePost, unlikePost } from '../services/post.api'
-import { followUser, unfollowUser } from '../../../services/user.api'
+import React, { useState, useEffect, useCallback } from 'react'
+import { likePost, unlikePost, deletePost } from '../services/post.api'
+import { followUser, unfollowUser, getFollowStatus } from '../../../services/user.api'
 import { savePost, unsavePost } from '../../../services/saved.api'
 import { getConsistentAvatar } from '../../../utils/avatars'
+import { useAuth } from '../../auth/hooks/useAuth'
 import Comments from './Comments'
 
-const Post = ({ user, post, onFollowStatusChange }) => {
+const Post = ({ user, post, onFollowStatusChange, onPostDeleted }) => {
+  const { user: currentUser } = useAuth()
   // Use consistent avatar based on username
   const avatar = user?.profileImage || getConsistentAvatar(user?.username || 'user')
   const username = user?.username || "Unknown"
+  const isPostOwner = currentUser?.username === username
   
   const [isLiked, setIsLiked] = useState(post?.isLiked || false)
   const [likeCount, setLikeCount] = useState(post?.likes?.length || 0)
@@ -18,7 +21,28 @@ const Post = ({ user, post, onFollowStatusChange }) => {
   const [likeLoading, setLikeLoading] = useState(false)
   const [followLoading, setFollowLoading] = useState(false)
   const [saveLoading, setSaveLoading] = useState(false)
+  const [deleteLoading, setDeleteLoading] = useState(false)
   const [error, setError] = useState('')
+
+  const checkFollowStatus = useCallback(async () => {
+    try {
+      const data = await getFollowStatus(username)
+      console.log(`Follow status for ${username}:`, data.followStatus)
+      if (data.followStatus) {
+        setFollowStatus(data.followStatus)
+      }
+    } catch (err) {
+      console.log(`Could not verify follow status for ${username}:`, err.message)
+    }
+  }, [username])
+
+  // Sync follow status on mount and when post updates
+  useEffect(() => {
+    // Check if there's already a follow record on the backend
+    if (!isPostOwner && currentUser?.username && username !== currentUser.username) {
+      checkFollowStatus()
+    }
+  }, [post._id, username, currentUser, isPostOwner, checkFollowStatus])
 
   const handleLike = async (e) => {
     e.preventDefault()
@@ -148,9 +172,47 @@ const Post = ({ user, post, onFollowStatusChange }) => {
     }
   }
 
+  const handleDelete = async (e) => {
+    e.preventDefault()
+    if (deleteLoading || !isPostOwner) return
+    
+    const confirmDelete = window.confirm('Are you sure you want to delete this post? This action cannot be undone.')
+    if (!confirmDelete) return
+    
+    try {
+      setDeleteLoading(true)
+      setError('')
+      await deletePost(post._id)
+      
+      // Notify parent to remove this post from the feed
+      if (onPostDeleted) {
+        onPostDeleted(post._id)
+      }
+    } catch (error) {
+      console.error("Delete error:", error)
+      const errorMessage = error?.response?.data?.message || error?.message || 'Failed to delete post'
+      setError(`❌ ${errorMessage}`)
+      setTimeout(() => setError(''), 5000)
+    } finally {
+      setDeleteLoading(false)
+    }
+  }
+
   return (
     <div className="post">
       {error && <div className="post-error">{error}</div>}
+      
+      {/* Delete button - positioned absolutely in top right */}
+      {isPostOwner && (
+        <button 
+          className="post-delete-btn"
+          onClick={handleDelete}
+          disabled={deleteLoading}
+          title="Delete this post"
+        >
+          {deleteLoading ? '⏳' : '🗑️'}
+        </button>
+      )}
       
       <div className="user">
         <div className="user-info">
@@ -159,17 +221,19 @@ const Post = ({ user, post, onFollowStatusChange }) => {
           </div>
           <p>{username}</p>
         </div>
-        <button 
-          className={`follow-btn ${followStatus === 'accepted' ? 'following' : followStatus === 'pending' ? 'pending' : ''}`}
-          onClick={handleFollow}
-          disabled={followLoading || followStatus === 'pending'}
-          title={followStatus === 'pending' ? 'Follow request pending - Waiting for response' : followStatus === 'accepted' ? 'Following - Click to unfollow' : 'Send follow request'}
-        >
-          {followLoading ? '🔄 Sending...' : followStatus === 'accepted' ? '✓ Following' : followStatus === 'pending' ? '⏳ Pending' : '+ Follow'}
-        </button>
+        <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+          <button 
+            className={`follow-btn ${followStatus === 'accepted' ? 'following' : followStatus === 'pending' ? 'pending' : ''}`}
+            onClick={handleFollow}
+            disabled={followLoading || followStatus === 'pending' || isPostOwner}
+            title={isPostOwner ? "This is your post" : followStatus === 'pending' ? 'Follow request pending - Waiting for response' : followStatus === 'accepted' ? 'Following - Click to unfollow' : 'Send follow request'}
+          >
+            {isPostOwner ? '👤 Your Post' : followLoading ? '🔄 Sending...' : followStatus === 'accepted' ? '✓ Following' : followStatus === 'pending' ? '⏳ Pending' : '+ Follow'}
+          </button>
+        </div>
       </div>
       
-      <img src={post.imgUrl} alt="post" />
+      <img src={post?.imgUrl} alt="post" />
       
       <div className="icons">
         <div className="left">
@@ -217,7 +281,7 @@ const Post = ({ user, post, onFollowStatusChange }) => {
       </div>
       
       <div className="bottom">
-        <p className="caption">{post.caption}</p>
+        <p className="caption">{post?.caption}</p>
         <Comments postId={post._id} />
       </div>
     </div>

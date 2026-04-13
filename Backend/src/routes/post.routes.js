@@ -15,9 +15,9 @@ Private route, only authenticated user can create a post
 */
 /* @route GET /api/posts/feed
 @desc get the feed of the authenticated user, the feed should contain posts from the users that the authenticated user is following
-@access public
+@access private
 */
-postRouter.get('/feed', postController.getFeedController)
+postRouter.get('/feed', identifyUser, postController.getFeedController)
 
 /* LIKE /api/posts/like/:postId
   like a post with the given id

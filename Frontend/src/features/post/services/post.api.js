@@ -52,3 +52,13 @@ export const createPost = async (imageFile, caption) => {
         throw error;
     }
 };
+
+export const deletePost = async (postId) => {
+    try {
+        const res = await api.delete(`/posts/${postId}`);
+        return res.data;
+    } catch (error) {
+        console.error("deletePost failed:", error.response?.data || error.message);
+        throw error;
+    }
+};

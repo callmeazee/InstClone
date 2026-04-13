@@ -214,13 +214,13 @@ async function deletePostController(req,res){
 }
 
 async function getFeedController(req,res){
-    const user = req.user || null
-    const username = user?.username || null
+    const user = req.user
+    const username = user?.username
     const followModel = require('../models/follow.model')
     const savedModel = require('../models/saved.model')
 
     const posts = await Promise.all(
-        (await postModel.find({}).sort({_id: -1}).populate('user').lean()).map(async (post) => {
+        (await postModel.find({}).sort({_id: -1}).populate('user')).map(async (post) => {
             // Check if current user liked this post
             let isLiked = false
             if (username) {
@@ -259,7 +259,7 @@ async function getFeedController(req,res){
             post.isSaved = !!isSaved
             post.likes = Array(likeCount) // Create array to match frontend expectations
             
-            return post
+            return post.toObject ? post.toObject() : post
         })
     )
 

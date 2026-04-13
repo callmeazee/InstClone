@@ -5,16 +5,16 @@ import { useAuth } from '../../auth/hooks/useAuth'
 import { useNavigate } from 'react-router-dom'
 
 const CreatePost = () => {
-    const { user } = useAuth()
+    const { user, isInitialized } = useAuth()
     const navigate = useNavigate()
     const [caption, setCaption] = useState('')
 
-    // Redirect to login if not authenticated
+    // Redirect to login if not authenticated (but wait for auth initialization)
     useEffect(() => {
-        if (!user) {
+        if (isInitialized && !user) {
             navigate('/login')
         }
-    }, [user, navigate])
+    }, [user, isInitialized, navigate])
     const [selectedFile, setSelectedFile] = useState(null)
     const [preview, setPreview] = useState(null)
     const [error, setError] = useState('')

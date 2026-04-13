@@ -6,7 +6,7 @@ import { getConsistentAvatar } from '../../../utils/avatars'
 import '../style/follow-requests.scss'
 
 const FollowRequests = () => {
-  const { user } = useAuth()
+  const { user, isInitialized } = useAuth()
   const navigate = useNavigate()
   const [requests, setRequests] = useState([])
   const [loading, setLoading] = useState(true)
@@ -43,8 +43,10 @@ const FollowRequests = () => {
       setSuccessMessage(`✓ You are now following ${username}!`)
       setError('')
       
-      // Clear success message after 3 seconds
-      setTimeout(() => setSuccessMessage(''), 3000)
+      // Navigate to profile after 2 seconds to refresh stats
+      setTimeout(() => {
+        navigate('/profile')
+      }, 2000)
     } catch (err) {
       console.error("Failed to accept follow request:", err)
       setError(err?.response?.data?.message || 'Failed to accept request')
@@ -73,6 +75,19 @@ const FollowRequests = () => {
     } finally {
       setProcessingUsername(null)
     }
+  }
+
+  if (!isInitialized) {
+    return (
+      <div className="follow-requests">
+        <div className="container">
+          <div className="loading">
+            <div className="spinner"></div>
+            <p>Initializing...</p>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   if (!user) {
