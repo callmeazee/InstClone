@@ -233,26 +233,8 @@ async function getFeedController(req, res) {
     const followModel = require('../models/follow.model')
     const savedModel = require('../models/saved.model')
 
-    // Privacy-First Feed: only show posts from users the current user follows (accepted)
-    // plus the user's own posts
-    const acceptedFollows = await followModel.find({
-        follower: username,
-        status: 'accepted'
-    }).select('followee').lean()
-
-    const followedUsernames = acceptedFollows.map(f => f.followee)
-    // Include the current user's own posts in their feed
-    const allowedUsernames = [...followedUsernames, username]
-
-    // Find all users (by ObjectId) whose usernames are in the allowed list
-    const userModel = require('../models/user.model')
-    const allowedUsers = await userModel.find({
-        username: { $in: allowedUsernames }
-    }).select('_id').lean()
-    const allowedUserIds = allowedUsers.map(u => u._id)
-
     const rawPosts = await postModel
-        .find({ user: { $in: allowedUserIds } })
+        .find({})
         .sort({ _id: -1 })
         .populate('user')
 
@@ -315,4 +297,75 @@ async function getFeedController(req, res) {
     })
 }
 
-module.exports = {createPostController, getPostController, getPostDetailsController, likePostController, unlikePostController, deletePostController, getFeedController}
+async function searchPostsController(req, res) {
+    try {
+        const username = req.user.username
+        const query = (req.query.q || '').trim()
+
+        if (!query) {
+            return res.json({ posts: [] })
+        }
+
+        const followModel = require('../models/follow.model')
+        const savedModel = require('../models/saved.model')
+
+        // Case-insensitive regex search on caption
+        const regex = new RegExp(query, 'i')
+        const rawPosts = await postModel
+            .find({ caption: regex })
+            .sort({ _id: -1 })
+            .populate('user')
+            .limit(30)
+
+        const posts = await Promise.all(
+            rawPosts.map(async (post) => {
+                let isLiked = false
+                if (username) {
+                    isLiked = await likeModel.exists({
+                        user: username,
+                        post: post._id,
+                    })
+                }
+
+                const likeCount = await likeModel.countDocuments({ post: post._id })
+
+                let followStatus = null
+                if (username && post.user?.username && username !== post.user.username) {
+                    const followRecord = await followModel.findOne({
+                        follower: username,
+                        followee: post.user.username
+                    })
+                    if (followRecord) {
+                        followStatus = followRecord.status
+                    }
+                }
+
+                let isSaved = false
+                if (username) {
+                    isSaved = await savedModel.exists({
+                        user: username,
+                        post: post._id,
+                    })
+                }
+
+                const postObj = post.toObject ? post.toObject() : { ...post }
+                postObj.isLiked = !!isLiked
+                postObj.followStatus = followStatus
+                postObj.isSaved = !!isSaved
+                postObj.likes = Array.from({ length: likeCount })
+
+                return postObj
+            })
+        )
+
+        return res.json({
+            message: 'Posts fetched successfully',
+            posts
+        })
+    } catch (err) {
+        console.error('Search posts error:', err)
+        return res.status(500).json({ message: 'Server error' })
+    }
+}
+
+module.exports = { createPostController, getPostController, getPostDetailsController, likePostController, unlikePostController, deletePostController, getFeedController, searchPostsController }

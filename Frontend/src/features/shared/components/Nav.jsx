@@ -7,6 +7,7 @@ import '../nav.scss'
 
 const NAV_ITEMS = [
   { id: 'feed', label: 'Feed', path: '/feed', icon: 'feed' },
+  { id: 'search', label: 'Search', path: '/search', icon: 'search' },
   { id: 'create', label: 'Create', path: '/create-post', icon: 'create' },
   { id: 'requests', label: 'Requests', path: '/follow-requests', icon: 'requests' }
 ]
@@ -39,6 +40,15 @@ const NavIcon = ({ type }) => {
         <path d="M12 3L18.5 6V11.5C18.5 15.57 15.73 19.32 12 20.5C8.27 19.32 5.5 15.57 5.5 11.5V6L12 3Z" />
         <path d="M12 8.5V12.5" />
         <path d="M12 16H12.01" />
+      </svg>
+    )
+  }
+
+  if (type === 'search') {
+    return (
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+        <circle cx="11" cy="11" r="8" />
+        <path d="M21 21L16.65 16.65" />
       </svg>
     )
   }

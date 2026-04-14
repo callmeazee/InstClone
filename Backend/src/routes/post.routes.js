@@ -55,4 +55,10 @@ postRouter.delete('/:postId', identifyUser, postController.deletePostController)
 
 
 
+/* @route GET /api/posts/search
+@desc search posts by caption
+@access private
+*/
+postRouter.get('/search', identifyUser, postController.searchPostsController)
+
 module.exports = postRouter

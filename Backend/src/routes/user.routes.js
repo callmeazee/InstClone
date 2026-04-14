@@ -87,4 +87,11 @@ Private route, only authenticated user can get their own stats
 */
 userRouter.get('/my/stats', identifyUser, userController.getUserStatsController)
 
+/*
+GET /api/users/search [protected]
+search users by username or bio
+Private route, only authenticated user can search users
+*/
+userRouter.get('/search', identifyUser, userController.searchUsersController)
+
 module.exports = userRouter

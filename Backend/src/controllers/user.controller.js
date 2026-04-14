@@ -331,6 +331,48 @@ async function getUserStatsController(req, res) {
   }
 }
 
+/* SEARCH USERS */
+async function searchUsersController(req, res) {
+  try {
+    const currentUsername = req.user.username
+    const query = (req.query.q || '').trim()
+
+    if (!query) {
+      return res.json({ users: [] })
+    }
+
+    // Case-insensitive regex search on username and bio
+    const regex = new RegExp(query, 'i')
+    const users = await userModel
+      .find({
+        $or: [{ username: regex }, { bio: regex }],
+        username: { $ne: currentUsername } // exclude self
+      })
+      .select('username bio profileImage')
+      .limit(20)
+      .lean()
+
+    // Attach follow status for each result
+    const enriched = await Promise.all(
+      users.map(async (u) => {
+        const followRecord = await followModel.findOne({
+          follower: currentUsername,
+          followee: u.username
+        })
+        return {
+          ...u,
+          followStatus: followRecord ? followRecord.status : null
+        }
+      })
+    )
+
+    return res.json({ users: enriched })
+  } catch (err) {
+    console.error('Search users error:', err)
+    return res.status(500).json({ message: 'Server error' })
+  }
+}
+
 module.exports = {
   followUserController,
   acceptFollowController,
@@ -341,5 +383,6 @@ module.exports = {
   savePostController,
   unsavePostController,
   getSavedPostsController,
-  getUserStatsController
+  getUserStatsController,
+  searchUsersController
 }
