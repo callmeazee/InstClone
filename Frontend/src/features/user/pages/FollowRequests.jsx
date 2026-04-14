@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { useAuth } from '../../auth/hooks/useAuth'
 import { useNavigate } from 'react-router-dom'
 import { getPendingRequests, acceptFollowRequest, rejectFollowRequest } from '../../../services/user.api'
@@ -6,14 +6,65 @@ import { getConsistentAvatar } from '../../../utils/avatars'
 import Nav from '../../shared/components/Nav'
 import '../style/follow-requests.scss'
 
+// Fixed-position Toast notification component
+const Toast = ({ message, type, onClose }) => {
+  useEffect(() => {
+    if (!message) return
+    const timer = setTimeout(onClose, 4000)
+    return () => clearTimeout(timer)
+  }, [message, onClose])
+
+  if (!message) return null
+
+  return (
+    <div
+      style={{
+        position: 'fixed',
+        top: '1.25rem',
+        right: '1.25rem',
+        zIndex: 9999,
+        minWidth: '260px',
+        maxWidth: 'calc(100vw - 2.5rem)',
+        padding: '0.85rem 1.25rem',
+        borderRadius: '0.85rem',
+        background: type === 'error' ? 'rgba(185,28,28,0.92)' : 'rgba(21,128,61,0.92)',
+        color: '#fff',
+        fontWeight: 600,
+        fontSize: '0.9rem',
+        boxShadow: '0 8px 32px rgba(0,0,0,0.35)',
+        backdropFilter: 'blur(12px)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        gap: '0.75rem',
+        animation: 'slideInToast 0.25s ease',
+      }}
+    >
+      <span>{message}</span>
+      <button
+        onClick={onClose}
+        style={{ background: 'none', border: 'none', color: '#fff', cursor: 'pointer', fontSize: '1.1rem', lineHeight: 1, padding: 0 }}
+        aria-label="Dismiss"
+      >✕</button>
+    </div>
+  )
+}
+
 const FollowRequests = () => {
   const { user, isInitialized } = useAuth()
   const navigate = useNavigate()
   const [requests, setRequests] = useState([])
   const [loading, setLoading] = useState(true)
-  const [error, setError] = useState('')
-  const [successMessage, setSuccessMessage] = useState('')
+  const [toast, setToast] = useState({ message: '', type: '' })
   const [processingUsername, setProcessingUsername] = useState(null)
+
+  const showToast = useCallback((message, type = 'success') => {
+    setToast({ message, type })
+  }, [])
+
+  const clearToast = useCallback(() => {
+    setToast({ message: '', type: '' })
+  }, [])
 
   useEffect(() => {
     fetchPendingRequests()
@@ -22,13 +73,11 @@ const FollowRequests = () => {
   const fetchPendingRequests = async () => {
     try {
       setLoading(true)
-      setError('')
       const data = await getPendingRequests()
-      console.log("Fetched pending requests:", data)
       setRequests(data.requests || [])
     } catch (err) {
-      console.error("Failed to fetch pending requests:", err)
-      setError(err?.response?.data?.message || 'Failed to load follow requests')
+      console.error('Failed to fetch pending requests:', err)
+      showToast(err?.response?.data?.message || 'Failed to load follow requests', 'error')
     } finally {
       setLoading(false)
     }
@@ -37,21 +86,12 @@ const FollowRequests = () => {
   const handleAccept = async (username) => {
     try {
       setProcessingUsername(username)
-      console.log("Accepting follow request from:", username)
       await acceptFollowRequest(username)
-      // Remove from list after accepting
       setRequests(prev => prev.filter(req => req.follower !== username))
-      setSuccessMessage(`✓ You are now following ${username}!`)
-      setError('')
-      
-      // Navigate to profile after 2 seconds to refresh stats
-      setTimeout(() => {
-        navigate('/profile')
-      }, 2000)
+      showToast(`✓ You accepted ${username}'s follow request!`, 'success')
     } catch (err) {
-      console.error("Failed to accept follow request:", err)
-      setError(err?.response?.data?.message || 'Failed to accept request')
-      setTimeout(() => setError(''), 4000)
+      console.error('Failed to accept follow request:', err)
+      showToast(err?.response?.data?.message || 'Failed to accept request', 'error')
     } finally {
       setProcessingUsername(null)
     }
@@ -60,19 +100,12 @@ const FollowRequests = () => {
   const handleReject = async (username) => {
     try {
       setProcessingUsername(username)
-      console.log("Rejecting follow request from:", username)
       await rejectFollowRequest(username)
-      // Remove from list after rejecting
       setRequests(prev => prev.filter(req => req.follower !== username))
-      setSuccessMessage(`✓ Rejected request from ${username}`)
-      setError('')
-      
-      // Clear success message after 3 seconds
-      setTimeout(() => setSuccessMessage(''), 3000)
+      showToast(`✕ Rejected request from ${username}`, 'success')
     } catch (err) {
-      console.error("Failed to reject follow request:", err)
-      setError(err?.response?.data?.message || 'Failed to reject request')
-      setTimeout(() => setError(''), 4000)
+      console.error('Failed to reject follow request:', err)
+      showToast(err?.response?.data?.message || 'Failed to reject request', 'error')
     } finally {
       setProcessingUsername(null)
     }
@@ -133,17 +166,7 @@ const FollowRequests = () => {
           <span className="count">{requests.length}</span>
         </div>
 
-        {error && (
-          <div className="error-banner">
-            ❌ {error}
-          </div>
-        )}
-
-        {successMessage && (
-          <div className="success-banner">
-            {successMessage}
-          </div>
-        )}
+      <Toast message={toast.message} type={toast.type} onClose={clearToast} />
 
         {requests.length === 0 ? (
           <div className="empty-state">

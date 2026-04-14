@@ -227,14 +227,37 @@ async function deletePostController(req,res){
     })
 }
 
-async function getFeedController(req,res){
+async function getFeedController(req, res) {
     const user = req.user
     const username = user?.username
     const followModel = require('../models/follow.model')
     const savedModel = require('../models/saved.model')
 
+    // Privacy-First Feed: only show posts from users the current user follows (accepted)
+    // plus the user's own posts
+    const acceptedFollows = await followModel.find({
+        follower: username,
+        status: 'accepted'
+    }).select('followee').lean()
+
+    const followedUsernames = acceptedFollows.map(f => f.followee)
+    // Include the current user's own posts in their feed
+    const allowedUsernames = [...followedUsernames, username]
+
+    // Find all users (by ObjectId) whose usernames are in the allowed list
+    const userModel = require('../models/user.model')
+    const allowedUsers = await userModel.find({
+        username: { $in: allowedUsernames }
+    }).select('_id').lean()
+    const allowedUserIds = allowedUsers.map(u => u._id)
+
+    const rawPosts = await postModel
+        .find({ user: { $in: allowedUserIds } })
+        .sort({ _id: -1 })
+        .populate('user')
+
     const posts = await Promise.all(
-        (await postModel.find({}).sort({_id: -1}).populate('user')).map(async (post) => {
+        rawPosts.map(async (post) => {
             // Check if current user liked this post
             let isLiked = false
             if (username) {
@@ -243,11 +266,11 @@ async function getFeedController(req,res){
                     post: post._id,
                 })
             }
-            
+
             // Get like count
             const likeCount = await likeModel.countDocuments({ post: post._id })
-            
-            // Check if current user is following the post creator - return follow status
+
+            // Check follow status for post creator
             let followStatus = null
             if (username && post.user?.username && username !== post.user.username) {
                 const followRecord = await followModel.findOne({
@@ -255,11 +278,11 @@ async function getFeedController(req,res){
                     followee: post.user.username
                 })
                 if (followRecord) {
-                    followStatus = followRecord.status // 'pending', 'accepted', or null
+                    followStatus = followRecord.status
                 }
             }
-            
-            // Check if current user has saved this post
+
+            // Check if current user saved this post
             let isSaved = false
             if (username) {
                 isSaved = await savedModel.exists({
@@ -267,18 +290,18 @@ async function getFeedController(req,res){
                     post: post._id,
                 })
             }
-            
+
             post.isLiked = !!isLiked
             post.followStatus = followStatus
             post.isSaved = !!isSaved
-            post.likes = Array(likeCount) // Create array to match frontend expectations
-            
+            post.likes = Array(likeCount)
+
             return post.toObject ? post.toObject() : post
         })
     )
 
     res.status(200).json({
-        message: "Posts fetched successfully",
+        message: 'Posts fetched successfully',
         posts
     })
 }

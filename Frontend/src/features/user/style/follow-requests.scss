@@ -1,3 +1,8 @@
+@keyframes slideInToast {
+  from { opacity: 0; transform: translateX(1.5rem); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
 .follow-requests {
   min-height: 100vh;
   padding: 2rem 1rem 4rem;
