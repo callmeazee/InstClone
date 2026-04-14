@@ -212,14 +212,16 @@
 
   &.profile-menu--desktop {
     position: absolute;
-    right: calc(100% + 0.9rem);
+    left: calc(100% + 0.9rem);
     bottom: 0;
+    z-index: 1300;
   }
 
   &.profile-menu--mobile {
     position: absolute;
     right: 0;
     bottom: calc(100% + 0.7rem);
+    z-index: 1300;
   }
 }
 

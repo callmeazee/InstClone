@@ -296,7 +296,16 @@ async function getFeedController(req, res) {
             post.isSaved = !!isSaved
             post.likes = Array(likeCount)
 
-            return post.toObject ? post.toObject() : post
+            // Convert to plain object FIRST so Mongoose doesn't strip
+            // non-schema fields (isLiked, likes, isSaved, followStatus)
+            // then re-attach them on top of the plain object.
+            const postObj = post.toObject ? post.toObject() : { ...post }
+            postObj.isLiked = !!isLiked
+            postObj.followStatus = followStatus
+            postObj.isSaved = !!isSaved
+            postObj.likes = Array.from({ length: likeCount })
+
+            return postObj
         })
     )
 
